@@ -1,55 +1,52 @@
-<mat-toolbar color="primary" class="app-toolbar">
-  <span class="title">🎵 Music Bingo</span>
-  <span class="spacer"></span>
-  <span class="stats">
-    {{ songService.totalSongs() }} songs
-    @if (commitInfo.commitHash()) {
-      ·
-      <a class="commit-link" [href]="commitInfo.commitUrl()" target="_blank" rel="noopener">{{
-        commitInfo.commitHash()
-      }}</a>
-      · {{ commitInfo.commitDate() }}
-    }
-  </span>
-</mat-toolbar>
-
 <div class="container">
-  <!-- Search bar -->
-  <div class="search-bar">
-    <mat-icon class="search-icon">search</mat-icon>
-    <input
-      class="search-input"
-      [ngModel]="songService.searchQuery()"
-      (ngModelChange)="onSearchChange($event)"
-      placeholder="Search songs..."
-    />
-    @if (songService.searchQuery()) {
-      <button mat-icon-button class="search-clear" (click)="onSearchChange('')">
-        <mat-icon>close</mat-icon>
-      </button>
-    }
-  </div>
-
-  <!-- Sort controls + active list indicator -->
-  <div class="sort-bar">
-    <mat-select
-      class="sort-select"
-      [value]="songService.sortField()"
-      (selectionChange)="onSortChange($event.value)"
-    >
-      @for (opt of sortOptions; track opt.value) {
-        <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+  <div class="sticky-controls">
+    <!-- Search bar -->
+    <div class="search-bar">
+      <mat-icon class="search-icon">search</mat-icon>
+      <input
+        class="search-input"
+        [ngModel]="songService.searchQuery()"
+        (ngModelChange)="onSearchChange($event)"
+        placeholder="Search songs..."
+      />
+      @if (songService.searchQuery()) {
+        <button mat-icon-button class="search-clear" (click)="onSearchChange('')">
+          <mat-icon>close</mat-icon>
+        </button>
       }
-    </mat-select>
-    <button
-      mat-icon-button
-      class="sort-dir-btn"
-      (click)="onSortChange(songService.sortField())"
-      [matTooltip]="sortDirection === 'asc' ? 'Ascending' : 'Descending'"
-    >
-      <mat-icon>{{ sortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
-    </button>
-    <span class="spacer"></span>
+    </div>
+
+    <!-- Sort controls + active list indicator -->
+    <div class="sort-bar">
+      <mat-select
+        class="sort-select"
+        [value]="songService.sortField()"
+        (selectionChange)="onSortChange($event.value)"
+      >
+        @for (opt of sortOptions; track opt.value) {
+          <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+        }
+      </mat-select>
+      <button
+        mat-icon-button
+        class="sort-dir-btn"
+        (click)="onSortChange(songService.sortField())"
+        [matTooltip]="sortDirection === 'asc' ? 'Ascending' : 'Descending'"
+      >
+        <mat-icon>{{ sortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
+      </button>
+      <span class="spacer"></span>
+    </div>
+    <span class="stats">
+      {{ songService.totalSongs() }} songs
+      @if (commitInfo.commitHash()) {
+        ·
+        <a class="commit-link" [href]="commitInfo.commitUrl()" target="_blank" rel="noopener">{{
+          commitInfo.commitHash()
+        }}</a>
+        · {{ commitInfo.commitDate() }}
+      }
+    </span>
   </div>
 
   <!-- Tabs: All Songs + user lists + add button -->
@@ -110,15 +107,8 @@
       <p>{{ songService.error() }}</p>
     </div>
   } @else {
-    <div class="song-list">
-      @for (song of displayedSongs(); track song.trackId) {
-        <app-song-card
-          [song]="song"
-          [lists]="listService.lists()"
-          [songListIds]="listService.getSongListIds(song.trackId)"
-          (listToggled)="onListToggle($event)"
-        />
-      } @empty {
+    <cdk-virtual-scroll-viewport itemSize="120" class="song-list">
+      @if (displayedSongs().length === 0) {
         <div class="empty-state">
           <mat-icon>playlist_add</mat-icon>
           @if (songService.searchQuery()) {
@@ -128,6 +118,13 @@
           }
         </div>
       }
-    </div>
+      <app-song-card
+        *cdkVirtualFor="let song of displayedSongs(); trackBy: trackBySong"
+        [song]="song"
+        [lists]="listService.lists()"
+        [songListIds]="listService.getSongListIds(song.trackId)"
+        (listToggled)="onListToggle($event)"
+      />
+    </cdk-virtual-scroll-viewport>
   }
 </div>

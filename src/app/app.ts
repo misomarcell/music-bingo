@@ -1,6 +1,6 @@
 import { Component, computed, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,7 +12,7 @@ import { SongService } from './services/song.service';
 import { ListService } from './services/list.service';
 import { CommitInfoService } from './services/commit-info.service';
 import { SongCard } from './components/song-card/song-card';
-import { SortField } from './models/song';
+import { Song, SortField } from './models/song';
 import { ListNameDialog } from './components/list-name-dialog';
 import { ConfirmDialog } from './components/confirm-dialog';
 
@@ -32,7 +32,7 @@ const SORT_OPTIONS: { value: SortField; label: string }[] = [
   selector: 'app-root',
   imports: [
     FormsModule,
-    MatToolbarModule,
+    ScrollingModule,
     MatTabsModule,
     MatButtonModule,
     MatIconModule,
@@ -115,6 +115,10 @@ export class App implements OnInit {
 
   onListToggle(event: { trackId: number; listId: string }): void {
     this.listService.toggleSongInList(event.trackId, event.listId);
+  }
+
+  trackBySong(_index: number, song: Song): number {
+    return song.trackId;
   }
 
   addList(): void {

@@ -5,8 +5,8 @@ import { XmlParserService } from './xml-parser.service';
 @Injectable({ providedIn: 'root' })
 export class SongService {
   readonly songs = signal<Song[]>([]);
-  readonly sortField = signal<SortField>('name');
-  readonly sortAscending = signal<boolean>(true);
+  readonly sortField = signal<SortField>('dateAdded');
+  readonly sortAscending = signal<boolean>(false);
   readonly searchQuery = signal<string>('');
   readonly loading = signal<boolean>(false);
   readonly error = signal<string>('');

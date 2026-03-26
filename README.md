@@ -11,10 +11,12 @@ A web app for organizing songs from your Apple Music library into custom bingo l
 - **Multiple lists** — create, rename, and delete custom lists via tabs
 - **List header** — shows list name, song count, rename and delete actions when a list tab is selected
 - **Search** — filter songs by title, artist, or album
-- **Sort** — by title, artist, year, date added, bit rate, or length (ascending/descending)
+- **Sort** — by title, artist, year, date added, bit rate, or length (ascending/descending; default: date added, newest first)
+- **Sticky controls** — search and sort stay pinned at the top while scrolling
+- **Virtual scrolling** — only visible song cards are rendered for smooth performance with large libraries
 - **URL sharing** — append `?list=<id>` to link directly to a specific list
 - **Persistent state** — all lists and song assignments are saved in localStorage
-- **Commit info** — last deploy commit hash (linked to GitHub) and date shown in the toolbar
+- **Commit info** — last deploy commit hash (linked to GitHub) and date shown in the controls panel
 - **Auto-deploy** — pushes to `main` trigger GitHub Actions deployment to GitHub Pages
 
 ## How It Works
