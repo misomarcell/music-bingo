@@ -103,6 +103,16 @@
   min-width: 0;
 }
 
+.tab-count-chip {
+  font-size: 0.7rem;
+  font-weight: 500;
+  background: var(--mat-sys-surface-variant);
+  color: var(--mat-sys-on-surface-variant);
+  padding: 1px 7px;
+  border-radius: 10px;
+  line-height: 1.4;
+}
+
 .tab-icon {
   margin-right: 6px;
   font-size: 20px;

@@ -66,7 +66,10 @@
       @for (list of listService.lists(); track list.id) {
         <mat-tab>
           <ng-template mat-tab-label>
-            <span class="list-tab-label"> {{ list.name }} ({{ list.songTrackIds.length }}) </span>
+            <span class="list-tab-label">
+              {{ list.name }}
+              <span class="tab-count-chip">{{ list.songTrackIds.length }}</span>
+            </span>
           </ng-template>
         </mat-tab>
       }
