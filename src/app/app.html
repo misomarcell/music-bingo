@@ -1,7 +1,12 @@
 <mat-toolbar color="primary" class="app-toolbar">
   <span class="title">🎵 Music Bingo</span>
   <span class="spacer"></span>
-  <span class="stats"> {{ songService.totalSongs() }} songs </span>
+  <span class="stats">
+    {{ songService.totalSongs() }} songs
+    @if (commitInfo.commitHash()) {
+      · {{ commitInfo.commitHash() }} · {{ commitInfo.commitDate() }}
+    }
+  </span>
 </mat-toolbar>
 
 <div class="container">
@@ -24,14 +29,15 @@
 
   <!-- Sort controls + active list indicator -->
   <div class="sort-bar">
-    <mat-form-field appearance="outline" class="sort-select">
-      <mat-label>Sort by</mat-label>
-      <mat-select [value]="songService.sortField()" (selectionChange)="onSortChange($event.value)">
-        @for (opt of sortOptions; track opt.value) {
-          <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
+    <mat-select
+      class="sort-select"
+      [value]="songService.sortField()"
+      (selectionChange)="onSortChange($event.value)"
+    >
+      @for (opt of sortOptions; track opt.value) {
+        <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+      }
+    </mat-select>
     <button
       mat-icon-button
       class="sort-dir-btn"
@@ -115,10 +121,3 @@
     </div>
   }
 </div>
-
-@if (commitInfo.commitHash()) {
-  <footer class="commit-info">
-    <mat-icon>commit</mat-icon>
-    {{ commitInfo.commitHash() }} · {{ commitInfo.commitDate() }}
-  </footer>
-}

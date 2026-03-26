@@ -1,7 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 
-const GITHUB_API_URL =
-  'https://api.github.com/repos/misomarcell/music-bingo/commits/main';
+const GITHUB_API_URL = 'https://api.github.com/repos/misomarcell/music-bingo/commits/main';
 
 @Injectable({ providedIn: 'root' })
 export class CommitInfoService {
