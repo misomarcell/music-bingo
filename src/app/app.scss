@@ -3,6 +3,10 @@
   min-height: 100vh;
 }
 
+.spacer {
+  flex: 1;
+}
+
 .app-toolbar {
   position: sticky;
   top: 0;
@@ -11,10 +15,6 @@
   .title {
     font-size: 1.2rem;
     font-weight: 500;
-  }
-
-  .spacer {
-    flex: 1;
   }
 
   .stats {
@@ -100,10 +100,6 @@
     border-radius: 8px;
     background: transparent;
   }
-
-  .spacer {
-    flex: 1;
-  }
 }
 
 .tabs-row {
@@ -160,10 +156,6 @@
   .list-header-count {
     font-size: 0.85rem;
     color: var(--mat-sys-on-surface-variant);
-  }
-
-  .spacer {
-    flex: 1;
   }
 }
 

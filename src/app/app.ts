@@ -4,22 +4,16 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatBadgeModule } from '@angular/material/badge';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatChipsModule } from '@angular/material/chips';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { SongService } from './services/song.service';
 import { ListService } from './services/list.service';
 import { CommitInfoService } from './services/commit-info.service';
 import { SongCard } from './components/song-card/song-card';
 import { SortField } from './models/song';
-import { NewListDialog } from './components/new-list-dialog';
-import { RenameListDialog } from './components/rename-list-dialog';
+import { ListNameDialog } from './components/list-name-dialog';
 import { ConfirmDialog } from './components/confirm-dialog';
 
 const GITHUB_RAW_URL =
@@ -42,14 +36,9 @@ const SORT_OPTIONS: { value: SortField; label: string }[] = [
     MatTabsModule,
     MatButtonModule,
     MatIconModule,
-    MatMenuModule,
     MatSelectModule,
-    MatFormFieldModule,
-    MatInputModule,
     MatProgressSpinnerModule,
-    MatBadgeModule,
     MatTooltipModule,
-    MatChipsModule,
     MatDialogModule,
     SongCard,
   ],
@@ -129,7 +118,10 @@ export class App implements OnInit {
   }
 
   addList(): void {
-    const dialogRef = this.dialog.open(NewListDialog, { width: '320px' });
+    const dialogRef = this.dialog.open(ListNameDialog, {
+      width: '320px',
+      data: { title: 'New List', label: 'List name', confirmText: 'Create' },
+    });
     dialogRef.afterClosed().subscribe((name: string) => {
       if (name?.trim()) {
         this.listService.createList(name.trim());
@@ -160,9 +152,9 @@ export class App implements OnInit {
   renameList(id: string): void {
     const list = this.listService.lists().find((l) => l.id === id);
     if (!list) return;
-    const dialogRef = this.dialog.open(RenameListDialog, {
+    const dialogRef = this.dialog.open(ListNameDialog, {
       width: '320px',
-      data: { name: list.name },
+      data: { title: 'Rename List', label: 'List name', confirmText: 'Rename', name: list.name },
     });
     dialogRef.afterClosed().subscribe((newName: string) => {
       if (newName?.trim()) {

@@ -15,11 +15,6 @@ export class ListService {
     return lists.find((l) => l.id === id) || lists[0];
   });
 
-  readonly totalChecked = computed(() => {
-    const list = this.activeList();
-    return list ? list.songTrackIds.length : 0;
-  });
-
   constructor() {
     if (this.lists().length === 0) {
       const defaultList: SongList = {
@@ -81,10 +76,6 @@ export class ListService {
     return this.lists()
       .filter((l) => l.songTrackIds.includes(trackId))
       .map((l) => l.id);
-  }
-
-  isSongInAnyList(trackId: number): boolean {
-    return this.lists().some((l) => l.songTrackIds.includes(trackId));
   }
 
   private save(): void {
