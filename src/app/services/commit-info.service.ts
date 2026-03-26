@@ -24,10 +24,12 @@ export class CommitInfoService {
       const date = data.commit?.author?.date;
       if (date) {
         this.commitDate.set(
-          new Date(date).toLocaleDateString('en-US', {
+          new Date(date).toLocaleDateString('hu-HU', {
             year: 'numeric',
-            month: 'short',
+            month: 'numeric',
             day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
           }),
         );
       }

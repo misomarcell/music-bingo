@@ -1,6 +1,6 @@
-import { Component, computed, OnInit, signal, viewChild, AfterViewInit, DestroyRef, inject } from '@angular/core';
+import { Component, computed, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -47,21 +47,16 @@ const SORT_OPTIONS: { value: SortField; label: string }[] = [
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
-export class App implements OnInit, AfterViewInit {
+export class App implements OnInit {
   readonly sortOptions = SORT_OPTIONS;
 
   readonly selectedTabIndex = signal(0);
-  readonly controlsHidden = signal(false);
-
-  private readonly viewport = viewChild(CdkVirtualScrollViewport);
-  private lastScrollTop = 0;
-  private readonly destroyRef = inject(DestroyRef);
 
   readonly importedList = signal<SongList | null>(null);
 
   readonly displayedSongs = computed(() => {
     const imported = this.importedList();
-    if (imported) {
+    if (imported && this.selectedTabIndex() === this.listService.lists().length + 1) {
       return this.songService.getSongsByTrackIds(imported.songTrackIds);
     }
     if (this.selectedTabIndex() === 0) {
@@ -84,22 +79,6 @@ export class App implements OnInit, AfterViewInit {
     this.restoreTabFromUrl();
   }
 
-  ngAfterViewInit(): void {
-    const vp = this.viewport();
-    if (vp) {
-      const sub = vp.elementScrolled().subscribe(() => {
-        const currentScroll = vp.measureScrollOffset('top');
-        if (currentScroll > this.lastScrollTop && currentScroll > 60) {
-          this.controlsHidden.set(true);
-        } else {
-          this.controlsHidden.set(false);
-        }
-        this.lastScrollTop = currentScroll;
-      });
-      this.destroyRef.onDestroy(() => sub.unsubscribe());
-    }
-  }
-
   private restoreTabFromUrl(): void {
     const params = new URLSearchParams(window.location.search);
 
@@ -115,6 +94,7 @@ export class App implements OnInit, AfterViewInit {
               name: parsed.name,
               songTrackIds: parsed.songTrackIds,
             });
+            this.selectedTabIndex.set(this.listService.lists().length + 1);
             return;
           }
         }
@@ -150,7 +130,21 @@ export class App implements OnInit, AfterViewInit {
   }
 
   onTabChange(index: number): void {
+    const imported = this.importedList();
+    const importedTabIndex = imported ? this.listService.lists().length + 1 : -1;
+
+    if (imported && index !== importedTabIndex) {
+      this.importedList.set(null);
+      this.clearSharedParam();
+    }
+
     this.selectedTabIndex.set(index);
+
+    if (index === importedTabIndex) {
+      this.updateUrl(null);
+      return;
+    }
+
     if (index > 0) {
       const lists = this.listService.lists();
       const list = lists[index - 1];
@@ -171,22 +165,7 @@ export class App implements OnInit, AfterViewInit {
     return song.trackId;
   }
 
-  addList(): void {
-    const dialogRef = this.dialog.open(ListNameDialog, {
-      width: '320px',
-      data: { title: 'New List', label: 'List name', confirmText: 'Create' },
-    });
-    dialogRef.afterClosed().subscribe((name: string) => {
-      if (name?.trim()) {
-        this.listService.createList(name.trim());
-        const newIdx = this.listService.lists().length;
-        this.selectedTabIndex.set(newIdx);
-        this.updateUrl(this.listService.activeListId());
-      }
-    });
-  }
-
-  addListWithSong(trackId: number): void {
+  addList(trackId?: number): void {
     const dialogRef = this.dialog.open(ListNameDialog, {
       width: '320px',
       data: { title: 'New List', label: 'List name', confirmText: 'Create' },
@@ -195,12 +174,17 @@ export class App implements OnInit, AfterViewInit {
       if (name?.trim()) {
         this.listService.createList(name.trim());
         const newList = this.listService.lists()[this.listService.lists().length - 1];
-        this.listService.toggleSongInList(trackId, newList.id);
-        const newIdx = this.listService.lists().length;
-        this.selectedTabIndex.set(newIdx);
+        if (trackId !== undefined) {
+          this.listService.toggleSongInList(trackId, newList.id);
+        }
+        this.selectedTabIndex.set(this.listService.lists().length);
         this.updateUrl(newList.id);
       }
     });
+  }
+
+  addListWithSong(trackId: number): void {
+    this.addList(trackId);
   }
 
   deleteList(id: string): void {
@@ -271,6 +255,8 @@ export class App implements OnInit, AfterViewInit {
   dismissImportedList(): void {
     this.importedList.set(null);
     this.clearSharedParam();
+    this.selectedTabIndex.set(0);
+    this.updateUrl(null);
   }
 
   private clearSharedParam(): void {

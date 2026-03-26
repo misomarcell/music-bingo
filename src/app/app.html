@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="sticky-controls" [class.hidden]="controlsHidden()">
+  <div class="sticky-controls">
     <!-- Search bar -->
     <div class="search-bar">
       <mat-icon class="search-icon">search</mat-icon>
@@ -74,6 +74,17 @@
           </ng-template>
         </mat-tab>
       }
+
+      @if (importedList(); as imported) {
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <span class="list-tab-label imported-tab-label">
+              {{ imported.name }}
+              <span class="tab-count-chip">{{ imported.songTrackIds.length }}</span>
+            </span>
+          </ng-template>
+        </mat-tab>
+      }
     </mat-tab-group>
     <button mat-icon-button class="add-list-btn" (click)="addList()" matTooltip="Create new list">
       <mat-icon>add</mat-icon>
@@ -81,7 +92,7 @@
   </div>
 
   <!-- Content -->
-  @if (selectedTabIndex() > 0 && listService.activeList(); as activeList) {
+  @if (selectedTabIndex() > 0 && !importedList() && listService.activeList(); as activeList) {
     <div class="list-header">
       <span class="list-header-name">{{ activeList.name }}</span>
       <span class="list-header-count">{{ activeList.songTrackIds.length }} songs</span>
@@ -101,16 +112,19 @@
   }
   @if (importedList(); as imported) {
     <div class="imported-banner">
-      <span>
-        Shared list: <strong>{{ imported.name }}</strong> ({{ imported.songTrackIds.length }} songs)
-      </span>
-      <span class="spacer"></span>
-      <button mat-flat-button (click)="saveImportedList()">
+      <div class="imported-banner-top">
+        <span>
+          Shared list: <strong>{{ imported.name }}</strong> ({{ imported.songTrackIds.length }}
+          songs)
+        </span>
+        <span class="spacer"></span>
+        <button mat-icon-button matTooltip="Dismiss" (click)="dismissImportedList()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      <button mat-flat-button class="save-btn" (click)="saveImportedList()">
         <mat-icon>save</mat-icon>
         Save to My Lists
-      </button>
-      <button mat-icon-button matTooltip="Dismiss" (click)="dismissImportedList()">
-        <mat-icon>close</mat-icon>
       </button>
     </div>
   }
