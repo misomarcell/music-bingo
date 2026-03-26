@@ -139,7 +139,7 @@
       <p>{{ songService.error() }}</p>
     </div>
   } @else {
-    <cdk-virtual-scroll-viewport itemSize="120" class="song-list">
+    <cdk-virtual-scroll-viewport itemSize="88" class="song-list">
       @if (displayedSongs().length === 0) {
         <div class="empty-state">
           <mat-icon>playlist_add</mat-icon>
