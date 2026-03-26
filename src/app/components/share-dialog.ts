@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -18,9 +18,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     </mat-dialog-content>
     <mat-dialog-actions align="end">
       <button mat-button mat-dialog-close>Close</button>
-      <button mat-flat-button (click)="copyUrl(urlInput)">
-        <mat-icon>{{ copied ? 'check' : 'content_copy' }}</mat-icon>
-        {{ copied ? 'Copied!' : 'Copy' }}
+      <button mat-flat-button (click)="copyUrl(urlInput)" [class.copied]="copied()">
+        <mat-icon>{{ copied() ? 'check' : 'content_copy' }}</mat-icon>
+        {{ copied() ? 'Copied!' : 'Copy' }}
       </button>
     </mat-dialog-actions>
   `,
@@ -28,16 +28,20 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     .share-url-field {
       width: 100%;
     }
+    .copied {
+      color: var(--mat-sys-on-tertiary) !important;
+      transition: background-color 0.2s ease;
+    }
   `,
 })
 export class ShareDialog {
   data = inject<{ url: string }>(MAT_DIALOG_DATA);
-  copied = false;
+  copied = signal(false);
 
   copyUrl(input: HTMLInputElement): void {
     navigator.clipboard.writeText(input.value).then(() => {
-      this.copied = true;
-      setTimeout(() => (this.copied = false), 2000);
+      this.copied.set(true);
+      setTimeout(() => this.copied.set(false), 2000);
     });
   }
 }

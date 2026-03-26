@@ -97,3 +97,8 @@ mat-card {
     font-weight: 500;
   }
 }
+
+.expand-btn {
+  flex-shrink: 0;
+  color: var(--mat-sys-on-surface-variant);
+}

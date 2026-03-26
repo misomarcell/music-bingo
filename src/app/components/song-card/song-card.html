@@ -17,6 +17,11 @@
             <span>{{ list.name }}</span>
           </button>
         }
+        <mat-divider />
+        <button mat-menu-item (click)="onCreateList()">
+          <mat-icon>add</mat-icon>
+          <span>New list</span>
+        </button>
       </mat-menu>
       <div class="song-info">
         <div class="primary-info">
@@ -32,33 +37,38 @@
             <span class="list-badge-text">{{ listNames }}</span>
           </div>
         }
-        <div class="secondary-info">
-          @if (song().album) {
-            <span><strong>Album:</strong> {{ song().album }}</span>
-          }
-          @if (song().genre) {
-            <span><strong>Genre:</strong> {{ song().genre }}</span>
-          }
-          @if (song().composer) {
-            <span><strong>Composer:</strong> {{ song().composer }}</span>
-          }
-          @if (song().totalTime) {
-            <span><strong>Length:</strong> {{ formatDuration(song().totalTime) }}</span>
-          }
-          @if (song().bitRate) {
-            <span><strong>Bit Rate:</strong> {{ song().bitRate }} kbps</span>
-          }
-          @if (song().size) {
-            <span><strong>Size:</strong> {{ formatSize(song().size) }}</span>
-          }
-          @if (song().dateAdded) {
-            <span><strong>Added:</strong> {{ song().dateAdded | date: 'mediumDate' }}</span>
-          }
-          @if (song().playCount) {
-            <span><strong>Plays:</strong> {{ song().playCount }}</span>
-          }
-        </div>
+        @if (expanded) {
+          <div class="secondary-info">
+            @if (song().album) {
+              <span><strong>Album:</strong> {{ song().album }}</span>
+            }
+            @if (song().genre) {
+              <span><strong>Genre:</strong> {{ song().genre }}</span>
+            }
+            @if (song().composer) {
+              <span><strong>Composer:</strong> {{ song().composer }}</span>
+            }
+            @if (song().totalTime) {
+              <span><strong>Length:</strong> {{ formatDuration(song().totalTime) }}</span>
+            }
+            @if (song().bitRate) {
+              <span><strong>Bit Rate:</strong> {{ song().bitRate }} kbps</span>
+            }
+            @if (song().size) {
+              <span><strong>Size:</strong> {{ formatSize(song().size) }}</span>
+            }
+            @if (song().dateAdded) {
+              <span><strong>Added:</strong> {{ song().dateAdded | date: 'mediumDate' }}</span>
+            }
+            @if (song().playCount) {
+              <span><strong>Plays:</strong> {{ song().playCount }}</span>
+            }
+          </div>
+        }
       </div>
+      <button mat-icon-button class="expand-btn" (click)="expanded = !expanded">
+        <mat-icon>{{ expanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+      </button>
     </div>
   </mat-card-content>
 </mat-card>

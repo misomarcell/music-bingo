@@ -10,7 +10,7 @@
 .container {
   max-width: 800px;
   margin: 0 auto;
-  padding: 16px;
+  padding: 16px 24px;
 }
 
 .sticky-controls {
@@ -19,8 +19,13 @@
   z-index: 50;
   background-color: color-mix(in srgb, var(--mat-sys-primary) 8%, var(--mat-sys-surface));
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
-  margin: -16px -16px 8px;
-  padding: 16px 16px 4px;
+  margin: -16px -24px 8px;
+  padding: 16px 24px 4px;
+  transition: transform 0.3s ease;
+
+  &.hidden {
+    transform: translateY(-100%);
+  }
 }
 
 .stats {
@@ -112,7 +117,8 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  margin-bottom: 16px;
+  margin: 0 -24px 16px;
+  padding: 0 8px;
 }
 
 .list-tabs {
@@ -174,10 +180,6 @@
   border-radius: 8px;
   background: color-mix(in srgb, var(--mat-sys-tertiary) 12%, var(--mat-sys-surface));
   border: 1px solid var(--mat-sys-outline-variant);
-
-  mat-icon:first-child {
-    color: var(--mat-sys-tertiary);
-  }
 }
 
 .loading {
@@ -215,4 +217,9 @@
 
 .song-list {
   height: calc(100vh - 160px);
+  margin: 0 -12px;
+
+  .cdk-virtual-scroll-content-wrapper {
+    padding: 0 12px;
+  }
 }

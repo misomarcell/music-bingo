@@ -1,6 +1,6 @@
-import { Component, computed, OnInit, signal } from '@angular/core';
+import { Component, computed, OnInit, signal, viewChild, AfterViewInit, DestroyRef, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ScrollingModule } from '@angular/cdk/scrolling';
+import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -47,10 +47,15 @@ const SORT_OPTIONS: { value: SortField; label: string }[] = [
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
-export class App implements OnInit {
+export class App implements OnInit, AfterViewInit {
   readonly sortOptions = SORT_OPTIONS;
 
   readonly selectedTabIndex = signal(0);
+  readonly controlsHidden = signal(false);
+
+  private readonly viewport = viewChild(CdkVirtualScrollViewport);
+  private lastScrollTop = 0;
+  private readonly destroyRef = inject(DestroyRef);
 
   readonly importedList = signal<SongList | null>(null);
 
@@ -77,6 +82,22 @@ export class App implements OnInit {
   ngOnInit(): void {
     this.songService.loadSongs(GITHUB_RAW_URL);
     this.restoreTabFromUrl();
+  }
+
+  ngAfterViewInit(): void {
+    const vp = this.viewport();
+    if (vp) {
+      const sub = vp.elementScrolled().subscribe(() => {
+        const currentScroll = vp.measureScrollOffset('top');
+        if (currentScroll > this.lastScrollTop && currentScroll > 60) {
+          this.controlsHidden.set(true);
+        } else {
+          this.controlsHidden.set(false);
+        }
+        this.lastScrollTop = currentScroll;
+      });
+      this.destroyRef.onDestroy(() => sub.unsubscribe());
+    }
   }
 
   private restoreTabFromUrl(): void {
@@ -165,6 +186,23 @@ export class App implements OnInit {
     });
   }
 
+  addListWithSong(trackId: number): void {
+    const dialogRef = this.dialog.open(ListNameDialog, {
+      width: '320px',
+      data: { title: 'New List', label: 'List name', confirmText: 'Create' },
+    });
+    dialogRef.afterClosed().subscribe((name: string) => {
+      if (name?.trim()) {
+        this.listService.createList(name.trim());
+        const newList = this.listService.lists()[this.listService.lists().length - 1];
+        this.listService.toggleSongInList(trackId, newList.id);
+        const newIdx = this.listService.lists().length;
+        this.selectedTabIndex.set(newIdx);
+        this.updateUrl(newList.id);
+      }
+    });
+  }
+
   deleteList(id: string): void {
     if (this.listService.lists().length <= 1) return;
 
@@ -211,7 +249,14 @@ export class App implements OnInit {
   saveImportedList(): void {
     const imported = this.importedList();
     if (!imported) return;
-    this.listService.createList(imported.name);
+    const existingNames = new Set(this.listService.lists().map((l) => l.name));
+    let name = imported.name;
+    let suffix = 1;
+    while (existingNames.has(name)) {
+      suffix++;
+      name = `${imported.name}_${suffix}`;
+    }
+    this.listService.createList(name);
     const newList = this.listService.lists()[this.listService.lists().length - 1];
     for (const trackId of imported.songTrackIds) {
       this.listService.toggleSongInList(trackId, newList.id);

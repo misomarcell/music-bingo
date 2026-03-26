@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="sticky-controls">
+  <div class="sticky-controls" [class.hidden]="controlsHidden()">
     <!-- Search bar -->
     <div class="search-bar">
       <mat-icon class="search-icon">search</mat-icon>
@@ -101,13 +101,9 @@
   }
   @if (importedList(); as imported) {
     <div class="imported-banner">
-      <mat-icon>cloud_download</mat-icon>
-      <span
-        >Shared list: <strong>{{ imported.name }}</strong> ({{
-          imported.songTrackIds.length
-        }}
-        songs)</span
-      >
+      <span>
+        Shared list: <strong>{{ imported.name }}</strong> ({{ imported.songTrackIds.length }} songs)
+      </span>
       <span class="spacer"></span>
       <button mat-flat-button (click)="saveImportedList()">
         <mat-icon>save</mat-icon>
@@ -146,6 +142,7 @@
         [lists]="listService.lists()"
         [songListIds]="listService.getSongListIds(song.trackId)"
         (listToggled)="onListToggle($event)"
+        (createListRequested)="addListWithSong($event)"
       />
     </cdk-virtual-scroll-viewport>
   }

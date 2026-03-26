@@ -1,6 +1,7 @@
 import { Component, input, output } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -8,7 +9,14 @@ import { Song, SongList } from '../../models/song';
 
 @Component({
   selector: 'app-song-card',
-  imports: [MatCardModule, MatMenuModule, MatButtonModule, MatIconModule, DatePipe],
+  imports: [
+    MatCardModule,
+    MatDividerModule,
+    MatMenuModule,
+    MatButtonModule,
+    MatIconModule,
+    DatePipe,
+  ],
   templateUrl: './song-card.html',
   styleUrl: './song-card.scss',
 })
@@ -17,6 +25,9 @@ export class SongCard {
   readonly lists = input.required<SongList[]>();
   readonly songListIds = input<string[]>([]);
   readonly listToggled = output<{ trackId: number; listId: string }>();
+  readonly createListRequested = output<number>();
+
+  expanded = false;
 
   isInList(listId: string): boolean {
     return this.songListIds().includes(listId);
@@ -37,6 +48,10 @@ export class SongCard {
   onListToggle(listId: string, event: MouseEvent): void {
     event.stopPropagation();
     this.listToggled.emit({ trackId: this.song().trackId, listId });
+  }
+
+  onCreateList(): void {
+    this.createListRequested.emit(this.song().trackId);
   }
 
   formatDuration(ms: number): string {
