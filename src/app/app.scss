@@ -29,19 +29,55 @@
   padding: 16px;
 }
 
+.search-bar {
+  width: 100%;
+  margin-bottom: 4px;
+}
+
 .sort-bar {
   display: flex;
   align-items: center;
   gap: 8px;
   margin-bottom: 8px;
+  flex-wrap: wrap;
 
   .sort-select {
     width: 160px;
   }
+
+  .spacer {
+    flex: 1;
+  }
+}
+
+.active-list-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.85rem;
+  color: var(--mat-sys-primary);
+  background: color-mix(in srgb, var(--mat-sys-primary) 10%, transparent);
+  padding: 4px 12px;
+  border-radius: 16px;
+  white-space: nowrap;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.tabs-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 16px;
 }
 
 .list-tabs {
-  margin-bottom: 16px;
+  flex: 1;
+  min-width: 0;
 }
 
 .tab-icon {

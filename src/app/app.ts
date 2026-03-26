@@ -7,9 +7,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { SongService } from './services/song.service';
 import { ListService } from './services/list.service';
@@ -40,9 +42,11 @@ const SORT_OPTIONS: { value: SortField; label: string }[] = [
     MatMenuModule,
     MatSelectModule,
     MatFormFieldModule,
+    MatInputModule,
     MatProgressSpinnerModule,
     MatBadgeModule,
     MatTooltipModule,
+    MatChipsModule,
     MatDialogModule,
     SongCard,
   ],
@@ -71,19 +75,48 @@ export class App implements OnInit {
 
   ngOnInit(): void {
     this.songService.loadSongs(GITHUB_RAW_URL);
-    const lists = this.listService.lists();
-    const activeId = this.listService.activeListId();
-    const idx = lists.findIndex((l) => l.id === activeId);
-    this.selectedTabIndex.set(idx >= 0 ? idx + 1 : 0);
+    this.restoreTabFromUrl();
+  }
+
+  private restoreTabFromUrl(): void {
+    const params = new URLSearchParams(window.location.search);
+    const listId = params.get('list');
+    if (listId) {
+      const lists = this.listService.lists();
+      const idx = lists.findIndex((l) => l.id === listId);
+      if (idx >= 0) {
+        this.listService.selectList(listId);
+        this.selectedTabIndex.set(idx + 1);
+        return;
+      }
+      // List not found — remove invalid query param
+      this.updateUrl(null);
+    }
+    // Default: All Songs tab
+    this.selectedTabIndex.set(0);
+  }
+
+  private updateUrl(listId: string | null): void {
+    const url = new URL(window.location.href);
+    if (listId) {
+      url.searchParams.set('list', listId);
+    } else {
+      url.searchParams.delete('list');
+    }
+    window.history.replaceState({}, '', url.toString());
   }
 
   onTabChange(index: number): void {
     this.selectedTabIndex.set(index);
     if (index > 0) {
       const lists = this.listService.lists();
-      if (lists[index - 1]) {
-        this.listService.selectList(lists[index - 1].id);
+      const list = lists[index - 1];
+      if (list) {
+        this.listService.selectList(list.id);
+        this.updateUrl(list.id);
       }
+    } else {
+      this.updateUrl(null);
     }
   }
 
@@ -100,7 +133,9 @@ export class App implements OnInit {
     dialogRef.afterClosed().subscribe((name: string) => {
       if (name?.trim()) {
         this.listService.createList(name.trim());
-        this.selectedTabIndex.set(this.listService.lists().length);
+        const newIdx = this.listService.lists().length;
+        this.selectedTabIndex.set(newIdx);
+        this.updateUrl(this.listService.activeListId());
       }
     });
   }
@@ -118,12 +153,17 @@ export class App implements OnInit {
       if (confirmed) {
         this.listService.deleteList(id);
         this.selectedTabIndex.set(1);
+        this.updateUrl(this.listService.activeListId());
       }
     });
   }
 
   onSortChange(field: SortField): void {
     this.songService.setSort(field);
+  }
+
+  onSearchChange(query: string): void {
+    this.songService.searchQuery.set(query);
   }
 
   get sortDirection(): string {

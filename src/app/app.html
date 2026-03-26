@@ -2,15 +2,30 @@
   <span class="title">🎵 Music Bingo</span>
   <span class="spacer"></span>
   <span class="stats">
-    {{ songService.totalSongs() }} songs
-    @if (selectedTabIndex() > 0) {
-      · {{ listService.totalChecked() }} checked
-    }
+    {{ songService.totalSongs() }} songs · {{ listService.totalChecked() }} in
+    {{ listService.activeList().name }}
   </span>
 </mat-toolbar>
 
 <div class="container">
-  <!-- Sort controls -->
+  <!-- Search bar -->
+  <mat-form-field appearance="outline" class="search-bar">
+    <mat-label>Search songs</mat-label>
+    <mat-icon matPrefix>search</mat-icon>
+    <input
+      matInput
+      [ngModel]="songService.searchQuery()"
+      (ngModelChange)="onSearchChange($event)"
+      placeholder="Title, artist, or album..."
+    />
+    @if (songService.searchQuery()) {
+      <button matSuffix mat-icon-button (click)="onSearchChange('')">
+        <mat-icon>close</mat-icon>
+      </button>
+    }
+  </mat-form-field>
+
+  <!-- Sort controls + active list indicator -->
   <div class="sort-bar">
     <mat-form-field appearance="outline" class="sort-select">
       <mat-label>Sort by</mat-label>
@@ -27,45 +42,53 @@
     >
       <mat-icon>{{ sortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
     </button>
+    <span class="spacer"></span>
+    @if (selectedTabIndex() === 0) {
+      <span class="active-list-badge" matTooltip="Songs you check will be added to this list">
+        <mat-icon>playlist_add_check</mat-icon>
+        Adding to: <strong>{{ listService.activeList().name }}</strong>
+      </span>
+    }
   </div>
 
-  <!-- Tabs: All Songs + user lists -->
-  <mat-tab-group
-    [selectedIndex]="selectedTabIndex()"
-    (selectedIndexChange)="onTabChange($event)"
-    mat-stretch-tabs="false"
-    class="list-tabs"
-  >
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <mat-icon class="tab-icon">library_music</mat-icon>
-        All Songs
-      </ng-template>
-    </mat-tab>
-
-    @for (list of listService.lists(); track list.id) {
+  <!-- Tabs: All Songs + user lists + add button -->
+  <div class="tabs-row">
+    <mat-tab-group
+      [selectedIndex]="selectedTabIndex()"
+      (selectedIndexChange)="onTabChange($event)"
+      mat-stretch-tabs="false"
+      class="list-tabs"
+    >
       <mat-tab>
         <ng-template mat-tab-label>
-          <span class="list-tab-label">
-            {{ list.name }} ({{ list.songTrackIds.length }})
-            @if (listService.lists().length > 1) {
-              <button mat-icon-button class="delete-list-btn" (click)="deleteList(list.id, $event)">
-                <mat-icon>close</mat-icon>
-              </button>
-            }
-          </span>
+          <mat-icon class="tab-icon">library_music</mat-icon>
+          All Songs
         </ng-template>
       </mat-tab>
-    }
 
-    <mat-tab disabled>
-      <ng-template mat-tab-label>
-        <button mat-icon-button class="add-list-btn" (click)="addList()">
-          <mat-icon>add</mat-icon>
-        </button>
-      </ng-template>
-    </mat-tab>
-  </mat-tab-group>
+      @for (list of listService.lists(); track list.id) {
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <span class="list-tab-label">
+              {{ list.name }} ({{ list.songTrackIds.length }})
+              @if (listService.lists().length > 1) {
+                <button
+                  mat-icon-button
+                  class="delete-list-btn"
+                  (click)="deleteList(list.id, $event)"
+                >
+                  <mat-icon>close</mat-icon>
+                </button>
+              }
+            </span>
+          </ng-template>
+        </mat-tab>
+      }
+    </mat-tab-group>
+    <button mat-icon-button class="add-list-btn" (click)="addList()" matTooltip="Create new list">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
 
   <!-- Content -->
   @if (songService.loading()) {
@@ -89,7 +112,11 @@
       } @empty {
         <div class="empty-state">
           <mat-icon>playlist_add</mat-icon>
-          <p>No songs in this list yet. Go to "All Songs" and check some!</p>
+          @if (songService.searchQuery()) {
+            <p>No songs match your search.</p>
+          } @else {
+            <p>No songs in this list yet. Go to "All Songs" and check some!</p>
+          }
         </div>
       }
     </div>
