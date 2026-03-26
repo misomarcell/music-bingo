@@ -19,6 +19,7 @@ import { CommitInfoService } from './services/commit-info.service';
 import { SongCard } from './components/song-card/song-card';
 import { SortField } from './models/song';
 import { NewListDialog } from './components/new-list-dialog';
+import { RenameListDialog } from './components/rename-list-dialog';
 import { ConfirmDialog } from './components/confirm-dialog';
 
 const GITHUB_RAW_URL = 'https://raw.githubusercontent.com/misomarcell/music-bingo/main/example.xml';
@@ -138,8 +139,7 @@ export class App implements OnInit {
     });
   }
 
-  deleteList(id: string, event: MouseEvent): void {
-    event.stopPropagation();
+  deleteList(id: string): void {
     if (this.listService.lists().length <= 1) return;
 
     const list = this.listService.lists().find((l) => l.id === id);
@@ -150,8 +150,22 @@ export class App implements OnInit {
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {
         this.listService.deleteList(id);
-        this.selectedTabIndex.set(1);
-        this.updateUrl(this.listService.activeListId());
+        this.selectedTabIndex.set(0);
+        this.updateUrl(null);
+      }
+    });
+  }
+
+  renameList(id: string): void {
+    const list = this.listService.lists().find((l) => l.id === id);
+    if (!list) return;
+    const dialogRef = this.dialog.open(RenameListDialog, {
+      width: '320px',
+      data: { name: list.name },
+    });
+    dialogRef.afterClosed().subscribe((newName: string) => {
+      if (newName?.trim()) {
+        this.listService.renameList(id, newName.trim());
       }
     });
   }

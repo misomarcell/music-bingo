@@ -68,15 +68,6 @@
           <ng-template mat-tab-label>
             <span class="list-tab-label">
               {{ list.name }} ({{ list.songTrackIds.length }})
-              @if (listService.lists().length > 1) {
-                <button
-                  mat-icon-button
-                  class="delete-list-btn"
-                  (click)="deleteList(list.id, $event)"
-                >
-                  <mat-icon>close</mat-icon>
-                </button>
-              }
             </span>
           </ng-template>
         </mat-tab>
@@ -88,6 +79,21 @@
   </div>
 
   <!-- Content -->
+  @if (selectedTabIndex() > 0 && listService.activeList(); as activeList) {
+    <div class="list-header">
+      <span class="list-header-name">{{ activeList.name }}</span>
+      <span class="list-header-count">{{ activeList.songTrackIds.length }} songs</span>
+      <span class="spacer"></span>
+      <button mat-icon-button matTooltip="Rename list" (click)="renameList(activeList.id)">
+        <mat-icon>edit</mat-icon>
+      </button>
+      @if (listService.lists().length > 1) {
+        <button mat-icon-button matTooltip="Delete list" (click)="deleteList(activeList.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      }
+    </div>
+  }
   @if (songService.loading()) {
     <div class="loading">
       <mat-spinner diameter="48"></mat-spinner>
