@@ -8,13 +8,15 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string';
 import { SongService } from './services/song.service';
 import { ListService } from './services/list.service';
 import { CommitInfoService } from './services/commit-info.service';
 import { SongCard } from './components/song-card/song-card';
-import { Song, SortField } from './models/song';
+import { Song, SongList, SortField } from './models/song';
 import { ListNameDialog } from './components/list-name-dialog';
 import { ConfirmDialog } from './components/confirm-dialog';
+import { ShareDialog } from './components/share-dialog';
 
 const GITHUB_RAW_URL =
   'https://raw.githubusercontent.com/misomarcell/music-bingo/main/sources/default.xml';
@@ -50,7 +52,13 @@ export class App implements OnInit {
 
   readonly selectedTabIndex = signal(0);
 
+  readonly importedList = signal<SongList | null>(null);
+
   readonly displayedSongs = computed(() => {
+    const imported = this.importedList();
+    if (imported) {
+      return this.songService.getSongsByTrackIds(imported.songTrackIds);
+    }
     if (this.selectedTabIndex() === 0) {
       return this.songService.sortedSongs();
     }
@@ -73,6 +81,27 @@ export class App implements OnInit {
 
   private restoreTabFromUrl(): void {
     const params = new URLSearchParams(window.location.search);
+
+    const shared = params.get('shared');
+    if (shared) {
+      try {
+        const json = decompressFromEncodedURIComponent(shared);
+        if (json) {
+          const parsed = JSON.parse(json);
+          if (parsed.name && Array.isArray(parsed.songTrackIds)) {
+            this.importedList.set({
+              id: 'imported',
+              name: parsed.name,
+              songTrackIds: parsed.songTrackIds,
+            });
+            return;
+          }
+        }
+      } catch {
+        // Invalid shared data — ignore
+      }
+    }
+
     const listId = params.get('list');
     if (listId) {
       const lists = this.listService.lists();
@@ -165,6 +194,44 @@ export class App implements OnInit {
         this.listService.renameList(id, newName.trim());
       }
     });
+  }
+
+  shareList(list: SongList): void {
+    const payload = JSON.stringify({ name: list.name, songTrackIds: list.songTrackIds });
+    const compressed = compressToEncodedURIComponent(payload);
+    const url = new URL(window.location.href);
+    url.searchParams.delete('list');
+    url.searchParams.set('shared', compressed);
+    this.dialog.open(ShareDialog, {
+      width: '480px',
+      data: { url: url.toString() },
+    });
+  }
+
+  saveImportedList(): void {
+    const imported = this.importedList();
+    if (!imported) return;
+    this.listService.createList(imported.name);
+    const newList = this.listService.lists()[this.listService.lists().length - 1];
+    for (const trackId of imported.songTrackIds) {
+      this.listService.toggleSongInList(trackId, newList.id);
+    }
+    this.importedList.set(null);
+    this.clearSharedParam();
+    const newIdx = this.listService.lists().length;
+    this.selectedTabIndex.set(newIdx);
+    this.updateUrl(newList.id);
+  }
+
+  dismissImportedList(): void {
+    this.importedList.set(null);
+    this.clearSharedParam();
+  }
+
+  private clearSharedParam(): void {
+    const url = new URL(window.location.href);
+    url.searchParams.delete('shared');
+    window.history.replaceState({}, '', url.toString());
   }
 
   onSortChange(field: SortField): void {

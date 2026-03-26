@@ -86,6 +86,9 @@
       <span class="list-header-name">{{ activeList.name }}</span>
       <span class="list-header-count">{{ activeList.songTrackIds.length }} songs</span>
       <span class="spacer"></span>
+      <button mat-icon-button matTooltip="Share list" (click)="shareList(activeList)">
+        <mat-icon>share</mat-icon>
+      </button>
       <button mat-icon-button matTooltip="Rename list" (click)="renameList(activeList.id)">
         <mat-icon>edit</mat-icon>
       </button>
@@ -94,6 +97,25 @@
           <mat-icon>delete</mat-icon>
         </button>
       }
+    </div>
+  }
+  @if (importedList(); as imported) {
+    <div class="imported-banner">
+      <mat-icon>cloud_download</mat-icon>
+      <span
+        >Shared list: <strong>{{ imported.name }}</strong> ({{
+          imported.songTrackIds.length
+        }}
+        songs)</span
+      >
+      <span class="spacer"></span>
+      <button mat-flat-button (click)="saveImportedList()">
+        <mat-icon>save</mat-icon>
+        Save to My Lists
+      </button>
+      <button mat-icon-button matTooltip="Dismiss" (click)="dismissImportedList()">
+        <mat-icon>close</mat-icon>
+      </button>
     </div>
   }
   @if (songService.loading()) {

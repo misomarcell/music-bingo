@@ -20,6 +20,7 @@ Music Bingo is a single-page Angular application that reads an Apple Music XML l
 | Control Flow | Modern template syntax (`@if`, `@for`, `@empty`, `*cdkVirtualFor`)    |
 | Data Source  | Apple Music plist XML parsed client-side via `DOMParser`              |
 | Persistence  | `localStorage` for lists; URL query params (`?list=<id>`) for sharing |
+| Sharing      | `lz-string` compression for URL-encoded list sharing (`?shared=`)     |
 | Performance  | CDK virtual scrolling — only visible song cards are rendered in DOM   |
 | Deployment   | GitHub Actions → GitHub Pages (auto-deploy on push to `main`)         |
 | Package Mgr  | npm 11.7.x, Node 20                                                   |
@@ -48,7 +49,8 @@ music-bingo/
 │   │   │   │   ├── song-card.html      # Card template with mat-menu list dropdown
 │   │   │   │   └── song-card.scss      # Card styles
 │   │   │   ├── list-name-dialog.ts     # Unified dialog for creating & renaming lists
-│   │   │   └── confirm-dialog.ts       # Confirmation dialog for deleting lists
+│   │   │   ├── confirm-dialog.ts       # Confirmation dialog for deleting lists
+│   │   │   └── share-dialog.ts         # Dialog showing share URL with copy button
 │   │   ├── app.ts                  # Root component: tabs, sorting, search, list management
 │   │   ├── app.html                # Main template: sticky controls, search, tabs, virtual song grid
 │   │   ├── app.scss                # Main styles (sticky controls, virtual scroll viewport)
@@ -158,6 +160,7 @@ npx ng build --configuration production
 ## URL & Query Params
 
 - `?list=<listId>` — deep-links to a specific list tab on load (restored via `restoreTabFromUrl()`).
+- `?shared=<compressed>` — imports a shared list. The payload is a JSON object `{name, songTrackIds}` compressed with `lz-string`'s `compressToEncodedURIComponent`. On load, the app displays the shared songs with a banner offering to save the list to localStorage.
 - The active list ID is synced to the URL on tab change via `updateUrl()`.
 
 ---
