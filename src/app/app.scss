@@ -67,7 +67,11 @@
     flex-shrink: 0;
     width: 32px;
     height: 32px;
+    padding: 0;
     margin: -4px -4px -4px 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 
