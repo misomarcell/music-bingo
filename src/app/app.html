@@ -2,8 +2,7 @@
   <span class="title">🎵 Music Bingo</span>
   <span class="spacer"></span>
   <span class="stats">
-    {{ songService.totalSongs() }} songs · {{ listService.totalChecked() }} in
-    {{ listService.activeList().name }}
+    {{ songService.totalSongs() }} songs
   </span>
 </mat-toolbar>
 
@@ -43,12 +42,6 @@
       <mat-icon>{{ sortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
     </button>
     <span class="spacer"></span>
-    @if (selectedTabIndex() === 0) {
-      <span class="active-list-badge" matTooltip="Songs you check will be added to this list">
-        <mat-icon>playlist_add_check</mat-icon>
-        Adding to: <strong>{{ listService.activeList().name }}</strong>
-      </span>
-    }
   </div>
 
   <!-- Tabs: All Songs + user lists + add button -->
@@ -106,8 +99,9 @@
       @for (song of displayedSongs(); track song.trackId) {
         <app-song-card
           [song]="song"
-          [checked]="isSongChecked(song.trackId)"
-          (toggled)="onSongToggle($event)"
+          [lists]="listService.lists()"
+          [songListIds]="listService.getSongListIds(song.trackId)"
+          (listToggled)="onListToggle($event)"
         />
       } @empty {
         <div class="empty-state">

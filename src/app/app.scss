@@ -50,24 +50,6 @@
   }
 }
 
-.active-list-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 0.85rem;
-  color: var(--mat-sys-primary);
-  background: color-mix(in srgb, var(--mat-sys-primary) 10%, transparent);
-  padding: 4px 12px;
-  border-radius: 16px;
-  white-space: nowrap;
-
-  mat-icon {
-    font-size: 18px;
-    width: 18px;
-    height: 18px;
-  }
-}
-
 .tabs-row {
   display: flex;
   align-items: center;

@@ -120,12 +120,8 @@ export class App implements OnInit {
     }
   }
 
-  onSongToggle(trackId: number): void {
-    this.listService.toggleSong(trackId);
-  }
-
-  isSongChecked(trackId: number): boolean {
-    return this.listService.isSongChecked(trackId);
+  onListToggle(event: { trackId: number; listId: string }): void {
+    this.listService.toggleSongInList(event.trackId, event.listId);
   }
 
   addList(): void {
