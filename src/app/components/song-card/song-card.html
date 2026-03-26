@@ -63,6 +63,21 @@
             @if (song().playCount) {
               <span><strong>Plays:</strong> {{ song().playCount }}</span>
             }
+            <div class="search-links">
+              <a [href]="youtubeSearchUrl" target="_blank" rel="noopener" class="search-link yt">
+                <mat-icon class="search-link-icon">search</mat-icon>
+                YouTube Music
+              </a>
+              <a
+                [href]="spotifySearchUrl"
+                target="_blank"
+                rel="noopener"
+                class="search-link spotify"
+              >
+                <mat-icon class="search-link-icon">search</mat-icon>
+                Spotify
+              </a>
+            </div>
           </div>
         }
       </div>

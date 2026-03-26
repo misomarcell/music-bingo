@@ -98,6 +98,33 @@ mat-card {
   }
 }
 
+.search-links {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.search-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--mat-sys-primary);
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.search-link-icon {
+  font-size: 14px;
+  width: 14px;
+  height: 14px;
+}
+
 .expand-btn {
   flex-shrink: 0;
   color: var(--mat-sys-on-surface-variant);

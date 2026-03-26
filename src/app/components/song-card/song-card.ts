@@ -54,6 +54,18 @@ export class SongCard {
     this.createListRequested.emit(this.song().trackId);
   }
 
+  get searchQuery(): string {
+    return encodeURIComponent(`${this.song().artist} ${this.song().name}`);
+  }
+
+  get youtubeSearchUrl(): string {
+    return `https://music.youtube.com/search?q=${this.searchQuery}`;
+  }
+
+  get spotifySearchUrl(): string {
+    return `https://open.spotify.com/search/${this.searchQuery}`;
+  }
+
   formatDuration(ms: number): string {
     const totalSeconds = Math.floor(ms / 1000);
     const minutes = Math.floor(totalSeconds / 60);
