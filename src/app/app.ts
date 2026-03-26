@@ -22,7 +22,8 @@ import { NewListDialog } from './components/new-list-dialog';
 import { RenameListDialog } from './components/rename-list-dialog';
 import { ConfirmDialog } from './components/confirm-dialog';
 
-const GITHUB_RAW_URL = 'https://raw.githubusercontent.com/misomarcell/music-bingo/main/example.xml';
+const GITHUB_RAW_URL =
+  'https://raw.githubusercontent.com/misomarcell/music-bingo/main/sources/default.xml';
 
 const SORT_OPTIONS: { value: SortField; label: string }[] = [
   { value: 'name', label: 'Title' },

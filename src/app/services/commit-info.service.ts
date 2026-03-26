@@ -6,6 +6,7 @@ const GITHUB_API_URL = 'https://api.github.com/repos/misomarcell/music-bingo/com
 export class CommitInfoService {
   readonly commitHash = signal('');
   readonly commitDate = signal('');
+  readonly commitUrl = signal('');
 
   constructor() {
     this.fetchCommitInfo();
@@ -19,6 +20,7 @@ export class CommitInfoService {
       if (!res.ok) return;
       const data = await res.json();
       this.commitHash.set(data.sha?.slice(-7) ?? '');
+      this.commitUrl.set(data.html_url ?? '');
       const date = data.commit?.author?.date;
       if (date) {
         this.commitDate.set(

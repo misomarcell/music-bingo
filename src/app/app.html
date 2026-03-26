@@ -4,7 +4,11 @@
   <span class="stats">
     {{ songService.totalSongs() }} songs
     @if (commitInfo.commitHash()) {
-      · {{ commitInfo.commitHash() }} · {{ commitInfo.commitDate() }}
+      ·
+      <a class="commit-link" [href]="commitInfo.commitUrl()" target="_blank" rel="noopener">{{
+        commitInfo.commitHash()
+      }}</a>
+      · {{ commitInfo.commitDate() }}
     }
   </span>
 </mat-toolbar>

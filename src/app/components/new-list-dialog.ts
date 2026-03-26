@@ -11,7 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
   template: `
     <h2 mat-dialog-title>New List</h2>
     <mat-dialog-content>
-      <mat-form-field appearance="outline" class="full-width">
+      <mat-form-field appearance="outline" class="full-width" subscriptSizing="dynamic">
         <mat-label>List name</mat-label>
         <input matInput [(ngModel)]="listName" (keydown.enter)="submit()" cdkFocusInitial />
       </mat-form-field>
