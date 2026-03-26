@@ -3,7 +3,7 @@
   <span class="spacer"></span>
   <span class="stats">
     {{ songService.totalSongs() }} songs
-    @if (selectedTabIndex > 0) {
+    @if (selectedTabIndex() > 0) {
       · {{ listService.totalChecked() }} checked
     }
   </span>
@@ -31,7 +31,7 @@
 
   <!-- Tabs: All Songs + user lists -->
   <mat-tab-group
-    [selectedIndex]="selectedTabIndex"
+    [selectedIndex]="selectedTabIndex()"
     (selectedIndexChange)="onTabChange($event)"
     mat-stretch-tabs="false"
     class="list-tabs"

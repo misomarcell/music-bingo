@@ -1,4 +1,4 @@
-import { Component, computed, OnInit } from '@angular/core';
+import { Component, computed, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -52,10 +52,10 @@ const SORT_OPTIONS: { value: SortField; label: string }[] = [
 export class App implements OnInit {
   readonly sortOptions = SORT_OPTIONS;
 
-  selectedTabIndex = 0;
+  readonly selectedTabIndex = signal(0);
 
   readonly displayedSongs = computed(() => {
-    if (this.selectedTabIndex === 0) {
+    if (this.selectedTabIndex() === 0) {
       return this.songService.sortedSongs();
     }
     const list = this.listService.activeList();
@@ -74,11 +74,11 @@ export class App implements OnInit {
     const lists = this.listService.lists();
     const activeId = this.listService.activeListId();
     const idx = lists.findIndex((l) => l.id === activeId);
-    this.selectedTabIndex = idx >= 0 ? idx + 1 : 0;
+    this.selectedTabIndex.set(idx >= 0 ? idx + 1 : 0);
   }
 
   onTabChange(index: number): void {
-    this.selectedTabIndex = index;
+    this.selectedTabIndex.set(index);
     if (index > 0) {
       const lists = this.listService.lists();
       if (lists[index - 1]) {
@@ -100,7 +100,7 @@ export class App implements OnInit {
     dialogRef.afterClosed().subscribe((name: string) => {
       if (name?.trim()) {
         this.listService.createList(name.trim());
-        this.selectedTabIndex = this.listService.lists().length;
+        this.selectedTabIndex.set(this.listService.lists().length);
       }
     });
   }
@@ -117,7 +117,7 @@ export class App implements OnInit {
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {
         this.listService.deleteList(id);
-        this.selectedTabIndex = 1;
+        this.selectedTabIndex.set(1);
       }
     });
   }
