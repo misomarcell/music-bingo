@@ -15,6 +15,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { SongService } from './services/song.service';
 import { ListService } from './services/list.service';
+import { CommitInfoService } from './services/commit-info.service';
 import { SongCard } from './components/song-card/song-card';
 import { SortField } from './models/song';
 import { NewListDialog } from './components/new-list-dialog';
@@ -70,6 +71,7 @@ export class App implements OnInit {
   constructor(
     readonly songService: SongService,
     readonly listService: ListService,
+    readonly commitInfo: CommitInfoService,
     private dialog: MatDialog,
   ) {}
 

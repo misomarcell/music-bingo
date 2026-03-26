@@ -1,9 +1,7 @@
 <mat-toolbar color="primary" class="app-toolbar">
   <span class="title">🎵 Music Bingo</span>
   <span class="spacer"></span>
-  <span class="stats">
-    {{ songService.totalSongs() }} songs
-  </span>
+  <span class="stats"> {{ songService.totalSongs() }} songs </span>
 </mat-toolbar>
 
 <div class="container">
@@ -36,6 +34,7 @@
     </mat-form-field>
     <button
       mat-icon-button
+      class="sort-dir-btn"
       (click)="onSortChange(songService.sortField())"
       [matTooltip]="sortDirection === 'asc' ? 'Ascending' : 'Descending'"
     >
@@ -116,3 +115,10 @@
     </div>
   }
 </div>
+
+@if (commitInfo.commitHash()) {
+  <footer class="commit-info">
+    <mat-icon>commit</mat-icon>
+    {{ commitInfo.commitHash() }} · {{ commitInfo.commitDate() }}
+  </footer>
+}

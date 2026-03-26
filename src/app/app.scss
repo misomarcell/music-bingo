@@ -36,13 +36,17 @@
 
 .sort-bar {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 8px;
   margin-bottom: 8px;
   flex-wrap: wrap;
 
   .sort-select {
     width: 160px;
+  }
+
+  .sort-dir-btn {
+    align-self: center;
   }
 
   .spacer {
@@ -126,4 +130,21 @@
 .song-list {
   display: flex;
   flex-direction: column;
+}
+
+.commit-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px;
+  font-size: 0.75rem;
+  color: var(--mat-sys-on-surface-variant);
+  opacity: 0.6;
+
+  mat-icon {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+  }
 }
