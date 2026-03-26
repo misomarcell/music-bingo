@@ -11,21 +11,20 @@
 
 <div class="container">
   <!-- Search bar -->
-  <mat-form-field appearance="outline" class="search-bar">
-    <mat-label>Search songs</mat-label>
-    <mat-icon matPrefix>search</mat-icon>
+  <div class="search-bar">
+    <mat-icon class="search-icon">search</mat-icon>
     <input
-      matInput
+      class="search-input"
       [ngModel]="songService.searchQuery()"
       (ngModelChange)="onSearchChange($event)"
-      placeholder="Title, artist, or album..."
+      placeholder="Search songs..."
     />
     @if (songService.searchQuery()) {
-      <button matSuffix mat-icon-button (click)="onSearchChange('')">
+      <button mat-icon-button class="search-clear" (click)="onSearchChange('')">
         <mat-icon>close</mat-icon>
       </button>
     }
-  </mat-form-field>
+  </div>
 
   <!-- Sort controls + active list indicator -->
   <div class="sort-bar">
