@@ -1,0 +1,97 @@
+<mat-toolbar color="primary" class="app-toolbar">
+  <span class="title">🎵 Music Bingo</span>
+  <span class="spacer"></span>
+  <span class="stats">
+    {{ songService.totalSongs() }} songs
+    @if (selectedTabIndex > 0) {
+      · {{ listService.totalChecked() }} checked
+    }
+  </span>
+</mat-toolbar>
+
+<div class="container">
+  <!-- Sort controls -->
+  <div class="sort-bar">
+    <mat-form-field appearance="outline" class="sort-select">
+      <mat-label>Sort by</mat-label>
+      <mat-select [value]="songService.sortField()" (selectionChange)="onSortChange($event.value)">
+        @for (opt of sortOptions; track opt.value) {
+          <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <button
+      mat-icon-button
+      (click)="onSortChange(songService.sortField())"
+      [matTooltip]="sortDirection === 'asc' ? 'Ascending' : 'Descending'"
+    >
+      <mat-icon>{{ sortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
+    </button>
+  </div>
+
+  <!-- Tabs: All Songs + user lists -->
+  <mat-tab-group
+    [selectedIndex]="selectedTabIndex"
+    (selectedIndexChange)="onTabChange($event)"
+    mat-stretch-tabs="false"
+    class="list-tabs"
+  >
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">library_music</mat-icon>
+        All Songs
+      </ng-template>
+    </mat-tab>
+
+    @for (list of listService.lists(); track list.id) {
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <span class="list-tab-label">
+            {{ list.name }} ({{ list.songTrackIds.length }})
+            @if (listService.lists().length > 1) {
+              <button mat-icon-button class="delete-list-btn" (click)="deleteList(list.id, $event)">
+                <mat-icon>close</mat-icon>
+              </button>
+            }
+          </span>
+        </ng-template>
+      </mat-tab>
+    }
+
+    <mat-tab disabled>
+      <ng-template mat-tab-label>
+        <button mat-icon-button class="add-list-btn" (click)="addList()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+
+  <!-- Content -->
+  @if (songService.loading()) {
+    <div class="loading">
+      <mat-spinner diameter="48"></mat-spinner>
+      <p>Loading songs...</p>
+    </div>
+  } @else if (songService.error()) {
+    <div class="error">
+      <mat-icon>error</mat-icon>
+      <p>{{ songService.error() }}</p>
+    </div>
+  } @else {
+    <div class="song-list">
+      @for (song of displayedSongs(); track song.trackId) {
+        <app-song-card
+          [song]="song"
+          [checked]="isSongChecked(song.trackId)"
+          (toggled)="onSongToggle($event)"
+        />
+      } @empty {
+        <div class="empty-state">
+          <mat-icon>playlist_add</mat-icon>
+          <p>No songs in this list yet. Go to "All Songs" and check some!</p>
+        </div>
+      }
+    </div>
+  }
+</div>

@@ -1,0 +1,46 @@
+<mat-card [class.checked]="checked()" (click)="onToggle()">
+  <mat-card-content>
+    <div class="card-layout">
+      <mat-checkbox
+        [checked]="checked()"
+        (click)="$event.stopPropagation()"
+        (change)="onToggle()"
+      />
+      <div class="song-info">
+        <div class="primary-info">
+          <span class="song-title">{{ song().name }}</span>
+          <span class="song-artist">{{ song().artist }}</span>
+          @if (song().year) {
+            <span class="song-year">{{ song().year }}</span>
+          }
+        </div>
+        <div class="secondary-info">
+          @if (song().album) {
+            <span><strong>Album:</strong> {{ song().album }}</span>
+          }
+          @if (song().genre) {
+            <span><strong>Genre:</strong> {{ song().genre }}</span>
+          }
+          @if (song().composer) {
+            <span><strong>Composer:</strong> {{ song().composer }}</span>
+          }
+          @if (song().totalTime) {
+            <span><strong>Length:</strong> {{ formatDuration(song().totalTime) }}</span>
+          }
+          @if (song().bitRate) {
+            <span><strong>Bit Rate:</strong> {{ song().bitRate }} kbps</span>
+          }
+          @if (song().size) {
+            <span><strong>Size:</strong> {{ formatSize(song().size) }}</span>
+          }
+          @if (song().dateAdded) {
+            <span><strong>Added:</strong> {{ song().dateAdded | date: 'mediumDate' }}</span>
+          }
+          @if (song().playCount) {
+            <span><strong>Plays:</strong> {{ song().playCount }}</span>
+          }
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

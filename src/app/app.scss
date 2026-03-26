@@ -1,0 +1,111 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.app-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  .title {
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+
+  .spacer {
+    flex: 1;
+  }
+
+  .stats {
+    font-size: 0.9rem;
+    opacity: 0.9;
+  }
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.sort-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+
+  .sort-select {
+    width: 160px;
+  }
+}
+
+.list-tabs {
+  margin-bottom: 16px;
+}
+
+.tab-icon {
+  margin-right: 6px;
+  font-size: 20px;
+  vertical-align: middle;
+}
+
+.list-tab-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.delete-list-btn {
+  width: 24px !important;
+  height: 24px !important;
+  line-height: 24px !important;
+
+  .mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.add-list-btn {
+  margin: 0;
+}
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 0;
+  gap: 16px;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 0;
+  gap: 8px;
+  color: var(--mat-sys-error);
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 0;
+  gap: 8px;
+  color: var(--mat-sys-on-surface-variant);
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+  }
+}
+
+.song-list {
+  display: flex;
+  flex-direction: column;
+}

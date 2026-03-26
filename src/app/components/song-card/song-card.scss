@@ -1,0 +1,72 @@
+:host {
+  display: block;
+}
+
+mat-card {
+  cursor: pointer;
+  transition:
+    box-shadow 0.2s,
+    background-color 0.2s;
+  margin-bottom: 8px;
+
+  &:hover {
+    box-shadow: var(--mat-sys-level2);
+  }
+
+  &.checked {
+    background-color: color-mix(in srgb, var(--mat-sys-primary) 8%, transparent);
+    border-left: 3px solid var(--mat-sys-primary);
+  }
+}
+
+.card-layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.song-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.primary-info {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.song-title {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--mat-sys-on-surface);
+}
+
+.song-artist {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--mat-sys-primary);
+}
+
+.song-year {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--mat-sys-on-surface-variant);
+  background: var(--mat-sys-surface-variant);
+  padding: 1px 8px;
+  border-radius: 12px;
+}
+
+.secondary-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  font-size: 0.8rem;
+  color: var(--mat-sys-on-surface-variant);
+
+  strong {
+    font-weight: 500;
+  }
+}
