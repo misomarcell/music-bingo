@@ -4,7 +4,7 @@
 <dict>
 	<key>Major Version</key><integer>1</integer>
 	<key>Minor Version</key><integer>1</integer>
-	<key>Date</key><date>2026-03-26T09:41:10Z</date>
+	<key>Date</key><date>2026-03-28T13:20:13Z</date>
 	<key>Application Version</key><string>1.2.5.7</string>
 	<key>Features</key><integer>5</integer>
 	<key>Show Content Ratings</key><true/>
@@ -13834,6 +13834,38 @@
 			<key>File Folder Count</key><integer>-1</integer>
 			<key>Library Folder Count</key><integer>-1</integer>
 		</dict>
+		<key>19585</key>
+		<dict>
+			<key>Track ID</key><integer>19585</integer>
+			<key>Name</key><string>Rump shaker (radio mix)</string>
+			<key>Artist</key><string>Wreckx-N-Effect</string>
+			<key>Album Artist</key><string>Wreckx-N-Effect</string>
+			<key>Composer</key><string>Teddy Riley</string>
+			<key>Album</key><string>Rump Shaker</string>
+			<key>Genre</key><string>New Jack Swing</string>
+			<key>Kind</key><string>AIFF audio file</string>
+			<key>Size</key><integer>46022408</integer>
+			<key>Total Time</key><integer>236826</integer>
+			<key>Track Number</key><integer>1</integer>
+			<key>Track Count</key><integer>2</integer>
+			<key>Year</key><integer>1992</integer>
+			<key>Date Modified</key><date>2025-01-11T12:46:48Z</date>
+			<key>Date Added</key><date>2024-11-18T21:34:19Z</date>
+			<key>Bit Rate</key><integer>1536</integer>
+			<key>Sample Rate</key><integer>48000</integer>
+			<key>Comments</key><string>MCAS7-54388 / MCA Records</string>
+			<key>Play Count</key><integer>2</integer>
+			<key>Play Date</key><integer>3845040657</integer>
+			<key>Play Date UTC</key><date>2025-11-03T17:50:57Z</date>
+			<key>Skip Count</key><integer>1</integer>
+			<key>Skip Date</key><date>2025-05-11T11:35:47Z</date>
+			<key>Artwork Count</key><integer>1</integer>
+			<key>Persistent ID</key><string>AB9246022AFCA855</string>
+			<key>Track Type</key><string>File</string>
+			<key>Location</key><string>file:///Volumes/T7%20Shield/muzik/ep/r&#38;b%20+%20hip%20hop%20+%20soul%20+%20new%20jack%20swing/Wreckx-N-Effect%20-%20Rump%20Shaker%20%5B1992%20MCA%20Records%5D%20%5BMCA12%2054389%5D/b1%20Wreckx-N-Effect%20-%20Rump%20shaker%20(radio%20mix).aiff</string>
+			<key>File Folder Count</key><integer>-1</integer>
+			<key>Library Folder Count</key><integer>-1</integer>
+		</dict>
 		<key>19587</key>
 		<dict>
 			<key>Track ID</key><integer>19587</integer>
@@ -18762,9 +18794,9 @@
 			<key>Bit Rate</key><integer>1536</integer>
 			<key>Sample Rate</key><integer>48000</integer>
 			<key>Comments</key><string>9071 / Invictus</string>
-			<key>Play Count</key><integer>6</integer>
-			<key>Play Date</key><integer>3841064196</integer>
-			<key>Play Date UTC</key><date>2025-09-18T16:16:36Z</date>
+			<key>Play Count</key><integer>7</integer>
+			<key>Play Date</key><integer>3857375427</integer>
+			<key>Play Date UTC</key><date>2026-03-26T12:10:27Z</date>
 			<key>Artwork Count</key><integer>1</integer>
 			<key>Persistent ID</key><string>59C857CCE08E6417</string>
 			<key>Track Type</key><string>File</string>
@@ -19532,9 +19564,9 @@
 			<key>Bit Rate</key><integer>1536</integer>
 			<key>Sample Rate</key><integer>48000</integer>
 			<key>Comments</key><string>T-54176 / Tamla</string>
-			<key>Play Count</key><integer>4</integer>
-			<key>Play Date</key><integer>3841063885</integer>
-			<key>Play Date UTC</key><date>2025-09-18T16:11:25Z</date>
+			<key>Play Count</key><integer>5</integer>
+			<key>Play Date</key><integer>3857374802</integer>
+			<key>Play Date UTC</key><date>2026-03-26T12:00:02Z</date>
 			<key>Skip Count</key><integer>4</integer>
 			<key>Skip Date</key><date>2026-02-15T10:13:00Z</date>
 			<key>Artwork Count</key><integer>1</integer>
@@ -19866,9 +19898,9 @@
 			<key>Bit Rate</key><integer>1536</integer>
 			<key>Sample Rate</key><integer>48000</integer>
 			<key>Comments</key><string>45-44002 / Cotillion</string>
-			<key>Play Count</key><integer>4</integer>
-			<key>Play Date</key><integer>3841064040</integer>
-			<key>Play Date UTC</key><date>2025-09-18T16:14:00Z</date>
+			<key>Play Count</key><integer>5</integer>
+			<key>Play Date</key><integer>3857374961</integer>
+			<key>Play Date UTC</key><date>2026-03-26T12:02:41Z</date>
 			<key>Skip Count</key><integer>1</integer>
 			<key>Skip Date</key><date>2025-05-24T12:49:25Z</date>
 			<key>Artwork Count</key><integer>1</integer>
@@ -25827,9 +25859,9 @@
 			<key>Bit Rate</key><integer>1536</integer>
 			<key>Sample Rate</key><integer>48000</integer>
 			<key>Comments</key><string>45-6719 / ATCO Records</string>
-			<key>Play Count</key><integer>1</integer>
-			<key>Play Date</key><integer>3847599868</integer>
-			<key>Play Date UTC</key><date>2025-12-03T08:44:28Z</date>
+			<key>Play Count</key><integer>2</integer>
+			<key>Play Date</key><integer>3857375267</integer>
+			<key>Play Date UTC</key><date>2026-03-26T12:07:47Z</date>
 			<key>Artwork Count</key><integer>1</integer>
 			<key>Sort Album</key><string>Ghetto</string>
 			<key>Sort Name</key><string>ghetto - part 1</string>
@@ -26573,9 +26605,9 @@
 			<key>Bit Rate</key><integer>1536</integer>
 			<key>Sample Rate</key><integer>48000</integer>
 			<key>Comments</key><string>FANT-634 / Fantasy</string>
-			<key>Play Count</key><integer>2</integer>
-			<key>Play Date</key><integer>3848241147</integer>
-			<key>Play Date UTC</key><date>2025-12-10T18:52:27Z</date>
+			<key>Play Count</key><integer>3</integer>
+			<key>Play Date</key><integer>3857375103</integer>
+			<key>Play Date UTC</key><date>2026-03-26T12:05:03Z</date>
 			<key>Artwork Count</key><integer>1</integer>
 			<key>Persistent ID</key><string>752E5895F1611186</string>
 			<key>Track Type</key><string>File</string>
@@ -28756,9 +28788,9 @@
 			<key>Bit Rate</key><integer>1536</integer>
 			<key>Sample Rate</key><integer>48000</integer>
 			<key>Comments</key><string>4553 / Capitol Records</string>
-			<key>Play Count</key><integer>1</integer>
-			<key>Play Date</key><integer>3853998369</integer>
-			<key>Play Date UTC</key><date>2026-02-15T10:06:09Z</date>
+			<key>Play Count</key><integer>2</integer>
+			<key>Play Date</key><integer>3857374444</integer>
+			<key>Play Date UTC</key><date>2026-03-26T11:54:04Z</date>
 			<key>Artwork Count</key><integer>1</integer>
 			<key>Persistent ID</key><string>E9F0513B8BA5D9B1</string>
 			<key>Track Type</key><string>File</string>
@@ -29113,6 +29145,9 @@
 			<key>Bit Rate</key><integer>1536</integer>
 			<key>Sample Rate</key><integer>48000</integer>
 			<key>Comments</key><string>45-155 / Volt</string>
+			<key>Play Count</key><integer>1</integer>
+			<key>Play Date</key><integer>3857374605</integer>
+			<key>Play Date UTC</key><date>2026-03-26T11:56:45Z</date>
 			<key>Artwork Count</key><integer>1</integer>
 			<key>Sort Album Artist</key><string>Charmels</string>
 			<key>Sort Artist</key><string>Charmels</string>
@@ -29287,6 +29322,32 @@
 			<key>Persistent ID</key><string>259D3425A20376BD</string>
 			<key>Track Type</key><string>File</string>
 			<key>Location</key><string>file:///Volumes/T7%20Shield/muzik/songs/flash%20fm/Dunn%20&#38;%20McCashen%20-%20Alright%20in%20the%20city.aiff</string>
+			<key>File Folder Count</key><integer>-1</integer>
+			<key>Library Folder Count</key><integer>-1</integer>
+		</dict>
+		<key>89508</key>
+		<dict>
+			<key>Track ID</key><integer>89508</integer>
+			<key>Name</key><string>Exotic mysteries</string>
+			<key>Artist</key><string>Lonnie Liston Smith</string>
+			<key>Album Artist</key><string>Lonnie Liston Smith</string>
+			<key>Album</key><string>Exotic Mysteries</string>
+			<key>Genre</key><string>Jazz</string>
+			<key>Kind</key><string>AIFF audio file</string>
+			<key>Size</key><integer>52163682</integer>
+			<key>Total Time</key><integer>268693</integer>
+			<key>Track Number</key><integer>4</integer>
+			<key>Track Count</key><integer>8</integer>
+			<key>Year</key><integer>1978</integer>
+			<key>Date Modified</key><date>2026-03-14T09:33:38Z</date>
+			<key>Date Added</key><date>2026-03-28T13:14:23Z</date>
+			<key>Bit Rate</key><integer>1536</integer>
+			<key>Sample Rate</key><integer>48000</integer>
+			<key>Comments</key><string>JC 35654 / Columbia</string>
+			<key>Artwork Count</key><integer>1</integer>
+			<key>Persistent ID</key><string>11A649C7F727CA62</string>
+			<key>Track Type</key><string>File</string>
+			<key>Location</key><string>file:///Volumes/T7%20Shield/muzik/songs/disco/70s-80s%20disco%20+%20boogie%20+%20soul/Lonnie%20Liston%20Smith%20-%20Exotic%20mysteries.aiff</string>
 			<key>File Folder Count</key><integer>-1</integer>
 			<key>Library Folder Count</key><integer>-1</integer>
 		</dict>
@@ -29957,6 +30018,9 @@
 				</dict>
 				<dict>
 					<key>Track ID</key><integer>24797</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>89508</integer>
 				</dict>
 				<dict>
 					<key>Track ID</key><integer>22583</integer>
@@ -32261,6 +32325,9 @@
 				</dict>
 				<dict>
 					<key>Track ID</key><integer>19575</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>19585</integer>
 				</dict>
 			</array>
 		</dict>
