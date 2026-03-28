@@ -44,9 +44,6 @@ export class SongService {
         case 'dateAdded':
           cmp = a.dateAdded.localeCompare(b.dateAdded);
           break;
-        case 'bitRate':
-          cmp = a.bitRate - b.bitRate;
-          break;
         case 'totalTime':
           cmp = a.totalTime - b.totalTime;
           break;

@@ -18,7 +18,7 @@ export interface Song {
   playCount: number;
 }
 
-export type SortField = 'name' | 'year' | 'artist' | 'dateAdded' | 'bitRate' | 'totalTime';
+export type SortField = 'name' | 'year' | 'artist' | 'dateAdded' | 'totalTime';
 
 export interface SongList {
   id: string;
