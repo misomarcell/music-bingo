@@ -78,7 +78,6 @@ export class SongService {
       this.sortAscending.update((v) => !v);
     } else {
       this.sortField.set(field);
-      this.sortAscending.set(true);
     }
   }
 
