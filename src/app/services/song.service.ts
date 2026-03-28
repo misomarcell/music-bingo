@@ -5,15 +5,27 @@ import { XmlParserService } from './xml-parser.service';
 @Injectable({ providedIn: 'root' })
 export class SongService {
   readonly songs = signal<Song[]>([]);
-  readonly sortField = signal<SortField>('name');
-  readonly sortAscending = signal<boolean>(true);
+  readonly sortField = signal<SortField>('dateAdded');
+  readonly sortAscending = signal<boolean>(false);
+  readonly searchQuery = signal<string>('');
   readonly loading = signal<boolean>(false);
   readonly error = signal<string>('');
 
   readonly totalSongs = computed(() => this.songs().length);
 
+  readonly filteredSongs = computed(() => {
+    const query = this.searchQuery().toLowerCase().trim();
+    if (!query) return this.songs();
+    return this.songs().filter(
+      (s) =>
+        s.name.toLowerCase().includes(query) ||
+        s.artist.toLowerCase().includes(query) ||
+        s.album.toLowerCase().includes(query),
+    );
+  });
+
   readonly sortedSongs = computed(() => {
-    const songs = [...this.songs()];
+    const songs = [...this.filteredSongs()];
     const field = this.sortField();
     const asc = this.sortAscending();
 

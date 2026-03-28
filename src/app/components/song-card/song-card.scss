@@ -3,7 +3,6 @@
 }
 
 mat-card {
-  cursor: pointer;
   transition:
     box-shadow 0.2s,
     background-color 0.2s;
@@ -13,16 +12,25 @@ mat-card {
     box-shadow: var(--mat-sys-level2);
   }
 
-  &.checked {
-    background-color: color-mix(in srgb, var(--mat-sys-primary) 8%, transparent);
+  &.in-list {
+    background-color: color-mix(in srgb, var(--mat-sys-primary) 6%, transparent);
     border-left: 3px solid var(--mat-sys-primary);
   }
 }
 
 .card-layout {
   display: flex;
-  align-items: flex-start;
-  gap: 12px;
+  align-items: center;
+  gap: 8px;
+}
+
+.list-menu-btn {
+  flex-shrink: 0;
+  color: var(--mat-sys-on-surface-variant);
+
+  &.active {
+    color: var(--mat-sys-primary);
+  }
 }
 
 .song-info {
@@ -59,6 +67,25 @@ mat-card {
   border-radius: 12px;
 }
 
+.list-badges {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+  font-size: 0.8rem;
+  color: var(--mat-sys-primary);
+}
+
+.list-badge-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.list-badge-text {
+  font-weight: 500;
+}
+
 .secondary-info {
   display: flex;
   flex-wrap: wrap;
@@ -69,4 +96,36 @@ mat-card {
   strong {
     font-weight: 500;
   }
+}
+
+.search-links {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.search-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--mat-sys-primary);
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.search-link-icon {
+  font-size: 14px;
+  width: 14px;
+  height: 14px;
+}
+
+.expand-btn {
+  flex-shrink: 0;
+  color: var(--mat-sys-on-surface-variant);
 }

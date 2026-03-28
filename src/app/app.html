@@ -1,73 +1,133 @@
-<mat-toolbar color="primary" class="app-toolbar">
-  <span class="title">🎵 Music Bingo</span>
-  <span class="spacer"></span>
-  <span class="stats">
-    {{ songService.totalSongs() }} songs
-    @if (selectedTabIndex() > 0) {
-      · {{ listService.totalChecked() }} checked
-    }
-  </span>
-</mat-toolbar>
-
 <div class="container">
-  <!-- Sort controls -->
-  <div class="sort-bar">
-    <mat-form-field appearance="outline" class="sort-select">
-      <mat-label>Sort by</mat-label>
-      <mat-select [value]="songService.sortField()" (selectionChange)="onSortChange($event.value)">
+  <div class="sticky-controls">
+    <!-- Search bar -->
+    <div class="search-bar">
+      <mat-icon class="search-icon">search</mat-icon>
+      <input
+        class="search-input"
+        [ngModel]="songService.searchQuery()"
+        (ngModelChange)="onSearchChange($event)"
+        placeholder="Search songs..."
+      />
+      @if (songService.searchQuery()) {
+        <button mat-icon-button class="search-clear" (click)="onSearchChange('')">
+          <mat-icon>close</mat-icon>
+        </button>
+      }
+    </div>
+
+    <!-- Sort controls + active list indicator -->
+    <div class="sort-bar">
+      <mat-select
+        class="sort-select"
+        [value]="songService.sortField()"
+        (selectionChange)="onSortChange($event.value)"
+      >
         @for (opt of sortOptions; track opt.value) {
           <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
         }
       </mat-select>
-    </mat-form-field>
-    <button
-      mat-icon-button
-      (click)="onSortChange(songService.sortField())"
-      [matTooltip]="sortDirection === 'asc' ? 'Ascending' : 'Descending'"
+      <button
+        mat-icon-button
+        class="sort-dir-btn"
+        (click)="onSortChange(songService.sortField())"
+        [matTooltip]="sortDirection === 'asc' ? 'Ascending' : 'Descending'"
+      >
+        <mat-icon>{{ sortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
+      </button>
+      <span class="spacer"></span>
+    </div>
+    <span class="stats">
+      {{ songService.totalSongs() }} songs
+      @if (commitInfo.commitHash()) {
+        ·
+        <a class="commit-link" [href]="commitInfo.commitUrl()" target="_blank" rel="noopener">{{
+          commitInfo.commitHash()
+        }}</a>
+        · {{ commitInfo.commitDate() }}
+      }
+    </span>
+  </div>
+
+  <!-- Tabs: All Songs + user lists + add button -->
+  <div class="tabs-row">
+    <mat-tab-group
+      [selectedIndex]="selectedTabIndex()"
+      (selectedIndexChange)="onTabChange($event)"
+      mat-stretch-tabs="false"
+      class="list-tabs"
     >
-      <mat-icon>{{ sortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">library_music</mat-icon>
+          All Songs
+        </ng-template>
+      </mat-tab>
+
+      @for (list of listService.lists(); track list.id) {
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <span class="list-tab-label">
+              {{ list.name }}
+              <span class="tab-count-chip">{{ list.songTrackIds.length }}</span>
+            </span>
+          </ng-template>
+        </mat-tab>
+      }
+
+      @if (importedList(); as imported) {
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <span class="list-tab-label imported-tab-label">
+              {{ imported.name }}
+              <span class="tab-count-chip">{{ imported.songTrackIds.length }}</span>
+            </span>
+          </ng-template>
+        </mat-tab>
+      }
+    </mat-tab-group>
+    <button mat-icon-button class="add-list-btn" (click)="addList()" matTooltip="Create new list">
+      <mat-icon>add</mat-icon>
     </button>
   </div>
 
-  <!-- Tabs: All Songs + user lists -->
-  <mat-tab-group
-    [selectedIndex]="selectedTabIndex()"
-    (selectedIndexChange)="onTabChange($event)"
-    mat-stretch-tabs="false"
-    class="list-tabs"
-  >
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <mat-icon class="tab-icon">library_music</mat-icon>
-        All Songs
-      </ng-template>
-    </mat-tab>
-
-    @for (list of listService.lists(); track list.id) {
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <span class="list-tab-label">
-            {{ list.name }} ({{ list.songTrackIds.length }})
-            @if (listService.lists().length > 1) {
-              <button mat-icon-button class="delete-list-btn" (click)="deleteList(list.id, $event)">
-                <mat-icon>close</mat-icon>
-              </button>
-            }
-          </span>
-        </ng-template>
-      </mat-tab>
-    }
-
-    <mat-tab disabled>
-      <ng-template mat-tab-label>
-        <button mat-icon-button class="add-list-btn" (click)="addList()">
-          <mat-icon>add</mat-icon>
-        </button>
-      </ng-template>
-    </mat-tab>
-  </mat-tab-group>
-
   <!-- Content -->
+  @if (selectedTabIndex() > 0 && !importedList() && listService.activeList(); as activeList) {
+    <div class="list-header">
+      <span class="list-header-name">{{ activeList.name }}</span>
+      <span class="list-header-count">{{ activeList.songTrackIds.length }} songs</span>
+      <span class="spacer"></span>
+      <button mat-icon-button matTooltip="Share list" (click)="shareList(activeList)">
+        <mat-icon>share</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="Rename list" (click)="renameList(activeList.id)">
+        <mat-icon>edit</mat-icon>
+      </button>
+      @if (listService.lists().length > 1) {
+        <button mat-icon-button matTooltip="Delete list" (click)="deleteList(activeList.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      }
+    </div>
+  }
+  @if (importedList(); as imported) {
+    <div class="imported-banner">
+      <div class="imported-banner-top">
+        <span>
+          Shared list: <strong>{{ imported.name }}</strong> ({{ imported.songTrackIds.length }}
+          songs)
+        </span>
+        <span class="spacer"></span>
+        <button mat-icon-button matTooltip="Dismiss" (click)="dismissImportedList()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      <button mat-flat-button class="save-btn" (click)="saveImportedList()">
+        <mat-icon>save</mat-icon>
+        Save to My Lists
+      </button>
+    </div>
+  }
   @if (songService.loading()) {
     <div class="loading">
       <mat-spinner diameter="48"></mat-spinner>
@@ -79,19 +139,25 @@
       <p>{{ songService.error() }}</p>
     </div>
   } @else {
-    <div class="song-list">
-      @for (song of displayedSongs(); track song.trackId) {
-        <app-song-card
-          [song]="song"
-          [checked]="isSongChecked(song.trackId)"
-          (toggled)="onSongToggle($event)"
-        />
-      } @empty {
+    <cdk-virtual-scroll-viewport itemSize="88" class="song-list">
+      @if (displayedSongs().length === 0) {
         <div class="empty-state">
           <mat-icon>playlist_add</mat-icon>
-          <p>No songs in this list yet. Go to "All Songs" and check some!</p>
+          @if (songService.searchQuery()) {
+            <p>No songs match your search.</p>
+          } @else {
+            <p>No songs in this list yet. Go to "All Songs" and check some!</p>
+          }
         </div>
       }
-    </div>
+      <app-song-card
+        *cdkVirtualFor="let song of displayedSongs(); trackBy: trackBySong"
+        [song]="song"
+        [lists]="listService.lists()"
+        [songListIds]="listService.getSongListIds(song.trackId)"
+        (listToggled)="onListToggle($event)"
+        (createListRequested)="addListWithSong($event)"
+      />
+    </cdk-virtual-scroll-viewport>
   }
 </div>
