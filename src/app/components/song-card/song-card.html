@@ -51,9 +51,6 @@
             @if (song().totalTime) {
               <span><strong>Length:</strong> {{ formatDuration(song().totalTime) }}</span>
             }
-            @if (song().bitRate) {
-              <span><strong>Bit Rate:</strong> {{ song().bitRate }} kbps</span>
-            }
             @if (song().size) {
               <span><strong>Size:</strong> {{ formatSize(song().size) }}</span>
             }
