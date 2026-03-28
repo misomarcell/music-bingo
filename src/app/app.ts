@@ -26,7 +26,6 @@ const SORT_OPTIONS: { value: SortField; label: string }[] = [
   { value: 'artist', label: 'Artist' },
   { value: 'year', label: 'Year' },
   { value: 'dateAdded', label: 'Date Added' },
-  { value: 'bitRate', label: 'Bit Rate' },
   { value: 'totalTime', label: 'Length' },
 ];
 
