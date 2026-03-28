@@ -20,6 +20,7 @@ export class SongService {
       (s) =>
         s.name.toLowerCase().includes(query) ||
         s.artist.toLowerCase().includes(query) ||
+        s.composer.toLowerCase().includes(query) ||
         s.album.toLowerCase().includes(query),
     );
   });
