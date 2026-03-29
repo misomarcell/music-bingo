@@ -1,4 +1,4 @@
-import { Component, computed, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -48,6 +48,10 @@ const SORT_OPTIONS: { value: SortField; label: string }[] = [
 })
 export class App implements OnInit {
   readonly sortOptions = SORT_OPTIONS;
+  readonly songService = inject(SongService);
+  readonly listService = inject(ListService);
+  readonly commitInfo = inject(CommitInfoService);
+  private readonly dialog = inject(MatDialog);
 
   readonly selectedTabIndex = signal(0);
 
@@ -65,13 +69,6 @@ export class App implements OnInit {
     if (!list) return [];
     return this.songService.getSongsByTrackIds(list.songTrackIds);
   });
-
-  constructor(
-    readonly songService: SongService,
-    readonly listService: ListService,
-    readonly commitInfo: CommitInfoService,
-    private dialog: MatDialog,
-  ) {}
 
   ngOnInit(): void {
     this.songService.loadSongs(GITHUB_RAW_URL);

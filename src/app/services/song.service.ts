@@ -1,9 +1,11 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { Song, SortField } from '../models/song';
 import { XmlParserService } from './xml-parser.service';
 
 @Injectable({ providedIn: 'root' })
 export class SongService {
+  private readonly xmlParser = inject(XmlParserService);
+
   readonly songs = signal<Song[]>([]);
   readonly sortField = signal<SortField>('dateAdded');
   readonly sortAscending = signal<boolean>(false);
@@ -54,8 +56,6 @@ export class SongService {
 
     return songs;
   });
-
-  constructor(private xmlParser: XmlParserService) {}
 
   async loadSongs(url: string): Promise<void> {
     this.loading.set(true);

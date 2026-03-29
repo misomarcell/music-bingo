@@ -9,6 +9,16 @@ Music Bingo is a single-page Angular application that reads an Apple Music XML l
 
 ---
 
+## Agent Maintenance Rules
+
+- Keep this `AGENTS.md` file in sync with the codebase. If architecture, workflows, tooling, scripts, or quality gates change, update this file in the same change set.
+- After making code or config changes, always validate both quality gates locally:
+  1. `npm run lint`
+  2. `npm run build`
+- Before every commit, lint must pass for staged TypeScript and HTML files via the pre-commit hook (`husky` + `lint-staged`).
+
+---
+
 ## Tech Stack
 
 | Layer        | Technology                                                            |
@@ -22,6 +32,8 @@ Music Bingo is a single-page Angular application that reads an Apple Music XML l
 | Persistence  | `localStorage` for lists; URL query params (`?list=<id>`) for sharing |
 | Sharing      | `lz-string` compression for URL-encoded list sharing (`?shared=`)     |
 | Performance  | CDK virtual scrolling — only visible song cards are rendered in DOM   |
+| Linting      | ESLint 10 + `angular-eslint` (TS + HTML template linting)              |
+| Git Hooks    | Husky + lint-staged (pre-commit lint on staged `*.ts` and `*.html`)    |
 | Deployment   | GitHub Actions → GitHub Pages (auto-deploy on push to `main`)         |
 | Package Mgr  | npm 11.7.x, Node 20                                                   |
 | TypeScript   | 5.9.x                                                                 |
@@ -143,14 +155,19 @@ npm ci
 # Development server (http://localhost:4200)
 npx ng serve
 
+# Lint project sources (TS + HTML templates)
+npm run lint
+
 # Production build (output: dist/music-bingo/browser/)
 npx ng build --configuration production
 
-# Deploy: push to main → GitHub Actions auto-deploys to Pages
+# Validate both required quality gates (always run after changes)
+npm run validate
 ```
 
 ### Build Config Notes
 
+- Deploy by pushing to `main`; GitHub Actions builds and publishes to GitHub Pages.
 - `baseHref` is set to `"/music-bingo/"` in the production configuration (angular.json).
 - Budget thresholds: 1 MB warning, 2 MB error (initial bundle is ~680 KB).
 - A `404.html` copy of `index.html` is created during CI for SPA routing on GitHub Pages.
