@@ -78,7 +78,7 @@
           <ng-template mat-tab-label>
             <span class="list-tab-label">
               {{ list.name }}
-              <span class="tab-count-chip">{{ list.songTrackIds.length }}</span>
+              <span class="tab-count-chip">{{ list.songPersistentIds.length }}</span>
             </span>
           </ng-template>
         </mat-tab>
@@ -89,7 +89,7 @@
           <ng-template mat-tab-label>
             <span class="list-tab-label imported-tab-label">
               {{ imported.name }}
-              <span class="tab-count-chip">{{ imported.songTrackIds.length }}</span>
+              <span class="tab-count-chip">{{ imported.songPersistentIds.length }}</span>
             </span>
           </ng-template>
         </mat-tab>
@@ -104,7 +104,7 @@
   @if (selectedTabIndex() > 0 && !importedList() && listService.activeList(); as activeList) {
     <div class="list-header">
       <span class="list-header-name">{{ activeList.name }}</span>
-      <span class="list-header-count">{{ activeList.songTrackIds.length }} songs</span>
+      <span class="list-header-count">{{ activeList.songPersistentIds.length }} songs</span>
       <span class="spacer"></span>
       <button mat-icon-button matTooltip="Share list" (click)="shareList(activeList)">
         <mat-icon>share</mat-icon>
@@ -123,7 +123,7 @@
     <div class="imported-banner">
       <div class="imported-banner-top">
         <span>
-          Shared list: <strong>{{ imported.name }}</strong> ({{ imported.songTrackIds.length }}
+          Shared list: <strong>{{ imported.name }}</strong> ({{ imported.songPersistentIds.length }}
           songs)
         </span>
         <span class="spacer"></span>
@@ -168,8 +168,10 @@
         *cdkVirtualFor="let song of displayedSongs(); trackBy: trackBySong"
         [song]="song"
         [lists]="listService.lists()"
-        [songListIds]="listService.getSongListIds(song.trackId)"
+        [songListIds]="listService.getSongListIds(song.persistentId)"
+        [expanded]="isSongExpanded(song.persistentId)"
         (listToggled)="onListToggle($event)"
+        (expansionToggled)="onSongExpansionToggle($event)"
         (createListRequested)="addListWithSong($event)"
       />
     </cdk-virtual-scroll-viewport>

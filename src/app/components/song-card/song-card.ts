@@ -1,5 +1,6 @@
 import { Component, computed, effect, input, output, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { animate, style, transition, trigger } from '@angular/animations';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatMenuModule } from '@angular/material/menu';
@@ -13,6 +14,23 @@ function resolveAssetUrl(relativePath: string): string {
 
 @Component({
   selector: 'app-song-card',
+  animations: [
+    trigger('expandCollapse', [
+      transition(':enter', [
+        style({ height: '0', opacity: 0, transform: 'translateY(-4px)' }),
+        animate(
+          '180ms cubic-bezier(0.2, 0, 0, 1)',
+          style({ height: '*', opacity: 1, transform: 'translateY(0)' }),
+        ),
+      ]),
+      transition(':leave', [
+        animate(
+          '140ms cubic-bezier(0.4, 0, 1, 1)',
+          style({ height: '0', opacity: 0, transform: 'translateY(-2px)' }),
+        ),
+      ]),
+    ]),
+  ],
   imports: [
     MatCardModule,
     MatDividerModule,
@@ -28,11 +46,13 @@ export class SongCard {
   readonly song = input.required<Song>();
   readonly lists = input.required<SongList[]>();
   readonly songListIds = input<string[]>([]);
-  readonly listToggled = output<{ trackId: number; listId: string }>();
-  readonly createListRequested = output<number>();
+  readonly expanded = input(false);
+  readonly listToggled = output<{ persistentId: string; listId: string }>();
+  readonly expansionToggled = output<string>();
+  readonly createListRequested = output<string>();
   readonly coverLoadFailed = signal(false);
   readonly albumCoverUrl = computed(() =>
-    resolveAssetUrl(`album-covers/${this.song().trackId}.jpeg`),
+    resolveAssetUrl(`album-covers/${this.song().persistentId}.jpeg`),
   );
   readonly albumCoverAlt = computed(() => {
     const song = this.song();
@@ -42,14 +62,11 @@ export class SongCard {
     return `${song.artist} cover art`;
   });
 
-  expanded = false;
-
   constructor() {
     effect(() => {
-      const trackId = this.song().trackId;
-      void trackId;
+      const persistentId = this.song().persistentId;
+      void persistentId;
       this.coverLoadFailed.set(false);
-      this.expanded = false;
     });
   }
 
@@ -71,11 +88,16 @@ export class SongCard {
 
   onListToggle(listId: string, event: MouseEvent): void {
     event.stopPropagation();
-    this.listToggled.emit({ trackId: this.song().trackId, listId });
+    this.listToggled.emit({ persistentId: this.song().persistentId, listId });
   }
 
   onCreateList(): void {
-    this.createListRequested.emit(this.song().trackId);
+    this.createListRequested.emit(this.song().persistentId);
+  }
+
+  onExpansionToggle(event: MouseEvent): void {
+    event.stopPropagation();
+    this.expansionToggled.emit(this.song().persistentId);
   }
 
   onCoverLoadError(): void {

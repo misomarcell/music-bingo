@@ -12,7 +12,7 @@ Live: https://misomarcell.github.io/music-bingo/
 - Virtual scrolling for large libraries
 - URL sharing for both active lists and compressed shared-list payloads
 - Local persistence via `localStorage`
-- Album cover thumbnails loaded directly from `sources/album-covers/<trackId>.jpeg`
+- Album cover thumbnails loaded directly from `sources/album-covers/<persistentId>.jpeg`
 
 ## Development
 
@@ -57,8 +57,8 @@ npm run collect
 
 What it does:
 - Parses `sources/default.xml` with the same shared parser logic used by the app
-- For each song, checks if `sources/album-covers/<trackId>.jpeg` already exists
-- If missing, searches Discogs for that song's album and downloads the image to `sources/album-covers/<trackId>.jpeg`
+- For each song, checks if `sources/album-covers/<persistentId>.jpeg` already exists
+- If missing, searches Discogs for that song's album and downloads the image to `sources/album-covers/<persistentId>.jpeg`
 - Prints `[missing] Artist - Album` when a cover is missing both locally and on Discogs
 
 ## Deploy

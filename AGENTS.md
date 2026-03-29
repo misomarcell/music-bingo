@@ -6,8 +6,8 @@ Music Bingo is a single-page Angular app that parses an Apple Music XML export a
 
 Album cover workflow:
 - `npm run collect` downloads missing cover images from Discogs.
-- Covers are stored directly as files in `sources/album-covers/<trackId>.jpeg`.
-- The Angular UI resolves cover path from `song.trackId` and falls back to an icon when the file is missing.
+- Covers are stored directly as files in `sources/album-covers/<persistentId>.jpeg`.
+- The Angular UI resolves cover path from `song.persistentId` and falls back to an icon when the file is missing.
 - XML and cover assets are always resolved from `document.baseURI`:
   - Local dev reads local files.
   - Deployed app reads from GitHub Pages URL.
@@ -52,7 +52,7 @@ music-bingo/
 │   └── collect-album-covers.ts      # Discogs cover collector
 ├── sources/
 │   ├── default.xml                  # Apple Music export
-│   └── album-covers/                # Cover files named by Track ID with .jpeg extension
+│   └── album-covers/                # Cover files named by Persistent ID with .jpeg extension
 ├── src/
 │   ├── app/
 │   │   ├── components/song-card/    # Song card + cover thumbnail rendering
@@ -79,10 +79,10 @@ music-bingo/
   - Browser: `XmlParserService` -> `parseAppleMusicPlistFromRoot`.
   - Node script: `@xmldom/xmldom` + same parser function.
 - Collector source of truth is filesystem only:
-  - For each song with `trackId`, check `sources/album-covers/<trackId>.jpeg`.
+  - For each song with `persistentId`, check `sources/album-covers/<persistentId>.jpeg`.
   - If missing, search Discogs and download cover to that exact path.
   - If Discogs has no cover, print `[missing] Artist - Album`.
-- Song card cover URL is deterministic: `album-covers/${trackId}.jpeg`.
+- Song card cover URL is deterministic: `album-covers/${persistentId}.jpeg`.
 
 ---
 
@@ -117,4 +117,4 @@ DISCOGS_TOKEN=your_discogs_token
 
 - `cdk-virtual-scroll-viewport` needs fixed available height and stable `itemSize`.
 - Discogs search can return results without `cover_image`; release details are used as fallback.
-- Cover files are normalized as `<trackId>.jpeg` and filesystem remains the only lookup source.
+- Cover files are normalized as `<persistentId>.jpeg` and filesystem remains the only lookup source.

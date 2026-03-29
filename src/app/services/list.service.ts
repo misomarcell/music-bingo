@@ -20,7 +20,7 @@ export class ListService {
       const defaultList: SongList = {
         id: this.generateId(),
         name: 'Default List',
-        songTrackIds: [],
+        songPersistentIds: [],
       };
       this.lists.set([defaultList]);
       this.activeListId.set(defaultList.id);
@@ -38,7 +38,7 @@ export class ListService {
   }
 
   createList(name: string): void {
-    const newList: SongList = { id: this.generateId(), name, songTrackIds: [] };
+    const newList: SongList = { id: this.generateId(), name, songPersistentIds: [] };
     this.lists.update((lists) => [...lists, newList]);
     this.activeListId.set(newList.id);
     this.save();
@@ -59,22 +59,28 @@ export class ListService {
     this.save();
   }
 
-  toggleSongInList(trackId: number, listId: string): void {
+  toggleSongInList(persistentId: string, listId: string): void {
+    const normalizedId = this.normalizePersistentId(persistentId);
+    if (!normalizedId) return;
+
     this.lists.update((lists) =>
       lists.map((l) => {
         if (l.id !== listId) return l;
-        const ids = l.songTrackIds.includes(trackId)
-          ? l.songTrackIds.filter((id) => id !== trackId)
-          : [...l.songTrackIds, trackId];
-        return { ...l, songTrackIds: ids };
+        const ids = l.songPersistentIds.includes(normalizedId)
+          ? l.songPersistentIds.filter((id) => id !== normalizedId)
+          : [...l.songPersistentIds, normalizedId];
+        return { ...l, songPersistentIds: ids };
       }),
     );
     this.save();
   }
 
-  getSongListIds(trackId: number): string[] {
+  getSongListIds(persistentId: string): string[] {
+    const normalizedId = this.normalizePersistentId(persistentId);
+    if (!normalizedId) return [];
+
     return this.lists()
-      .filter((l) => l.songTrackIds.includes(trackId))
+      .filter((l) => l.songPersistentIds.includes(normalizedId))
       .map((l) => l.id);
   }
 
@@ -87,7 +93,12 @@ export class ListService {
     const data = localStorage.getItem(STORAGE_KEY);
     if (!data) return [];
     try {
-      return JSON.parse(data);
+      const parsed = JSON.parse(data);
+      if (!Array.isArray(parsed)) return [];
+
+      return parsed
+        .map((item) => this.parseStoredList(item))
+        .filter((item): item is SongList => Boolean(item));
     } catch {
       return [];
     }
@@ -99,5 +110,35 @@ export class ListService {
 
   private generateId(): string {
     return Date.now().toString(36) + Math.random().toString(36).substring(2, 8);
+  }
+
+  private parseStoredList(value: unknown): SongList | null {
+    if (!value || typeof value !== 'object') return null;
+    const record = value as Record<string, unknown>;
+
+    const id = typeof record['id'] === 'string' ? record['id'].trim() : '';
+    const name = typeof record['name'] === 'string' ? record['name'].trim() : '';
+    const songPersistentIds = this.parseStoredPersistentIds(record['songPersistentIds']);
+
+    if (!id || !name) return null;
+    return { id, name, songPersistentIds };
+  }
+
+  private parseStoredPersistentIds(value: unknown): string[] {
+    if (!Array.isArray(value)) return [];
+
+    const unique = new Set<string>();
+    for (const item of value) {
+      const normalized = this.normalizePersistentId(item);
+      if (normalized) {
+        unique.add(normalized);
+      }
+    }
+    return [...unique];
+  }
+
+  private normalizePersistentId(value: unknown): string {
+    if (typeof value !== 'string') return '';
+    return value.trim().toUpperCase();
   }
 }

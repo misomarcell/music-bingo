@@ -19,7 +19,7 @@ const XML_PATH = path.resolve(process.cwd(), 'sources/default.xml');
 const ALBUM_COVERS_DIR = path.resolve(process.cwd(), 'sources/album-covers');
 
 interface SongCoverTask {
-  trackId: number;
+  persistentId: string;
   album: string;
   artist: string;
   year: number;
@@ -243,12 +243,12 @@ function buildSongTasks(songs: Song[]): SongCoverTask[] {
   const tasks: SongCoverTask[] = [];
 
   for (const song of songs) {
-    if (!song.trackId) continue;
+    if (!song.persistentId) continue;
     const identity = getAlbumIdentity(song);
     if (!identity) continue;
 
     tasks.push({
-      trackId: song.trackId,
+      persistentId: song.persistentId,
       album: identity.album,
       artist: identity.artist,
       year: identity.year,
@@ -320,9 +320,9 @@ async function collectMissingAlbumCovers(): Promise<void> {
   console.log(`Parsed ${songs.length} songs, ${tasks.length} songs with album metadata.`);
 
   for (const task of tasks) {
-    const fileName = `${task.trackId}.jpeg`;
+    const fileName = `${task.persistentId}.jpeg`;
     const targetPath = path.resolve(ALBUM_COVERS_DIR, fileName);
-    const legacyPath = path.resolve(ALBUM_COVERS_DIR, String(task.trackId));
+    const legacyPath = path.resolve(ALBUM_COVERS_DIR, task.persistentId);
 
     if (await fileExists(targetPath)) {
       alreadyPresent++;
@@ -376,7 +376,7 @@ async function collectMissingAlbumCovers(): Promise<void> {
       console.log(`[downloaded] ${task.artist} - ${task.album} -> ${fileName}`);
     } catch (error) {
       failed++;
-      console.error(`[error] ${task.artist} - ${task.album} (track ${task.trackId}):`, error);
+      console.error(`[error] ${task.artist} - ${task.album} (persistent ${task.persistentId}):`, error);
     }
   }
 

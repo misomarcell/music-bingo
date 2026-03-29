@@ -1,5 +1,5 @@
 export interface Song {
-  trackId: number;
+  persistentId: string;
   name: string;
   artist: string;
   albumArtist: string;
@@ -23,5 +23,5 @@ export type SortField = 'name' | 'year' | 'artist' | 'dateAdded' | 'totalTime';
 export interface SongList {
   id: string;
   name: string;
-  songTrackIds: number[];
+  songPersistentIds: string[];
 }

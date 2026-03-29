@@ -72,28 +72,24 @@ mat-card {
 }
 
 .song-info {
-  flex: 1 1 auto;
+  flex: 1 1 0;
+  width: 0;
   min-width: 0;
   overflow: hidden;
 }
 
 .primary-info {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  grid-template-areas:
-    'title year'
-    'artist artist';
-  align-items: center;
-  column-gap: 8px;
-  row-gap: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
   margin-bottom: 6px;
   width: 100%;
   min-width: 0;
-  overflow: hidden;
 }
 
 .song-title {
-  grid-area: title;
+  width: 100%;
   min-width: 0;
   font-size: 1.1rem;
   font-weight: 500;
@@ -104,25 +100,14 @@ mat-card {
 }
 
 .song-artist {
-  grid-area: artist;
   min-width: 0;
+  width: 100%;
   font-size: 1rem;
   font-weight: 400;
   color: var(--mat-sys-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.song-year {
-  grid-area: year;
-  flex-shrink: 0;
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: var(--mat-sys-on-surface-variant);
-  background: var(--mat-sys-surface-variant);
-  padding: 1px 8px;
-  border-radius: 12px;
 }
 
 .list-badges {
@@ -150,17 +135,29 @@ mat-card {
   gap: 6px 16px;
   font-size: 0.8rem;
   color: var(--mat-sys-on-surface-variant);
+  overflow: hidden;
 
   strong {
     font-weight: 500;
   }
 }
 
+.song-name-detail {
+  width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.persistent-id-detail {
+  width: 100%;
+  margin-top: 10px;
+}
+
 .search-links {
   display: flex;
   gap: 12px;
   width: 100%;
-  margin-top: 4px;
+  margin-top: 14px;
 }
 
 .search-link {
@@ -187,4 +184,49 @@ mat-card {
   flex-shrink: 0;
   align-self: flex-start;
   color: var(--mat-sys-on-surface-variant);
+}
+
+@media (max-width: 600px) {
+  .card-layout {
+    display: grid;
+    grid-template-columns: auto auto minmax(0, 1fr) auto;
+    align-items: start;
+    column-gap: 8px;
+    row-gap: 6px;
+  }
+
+  .list-menu-btn {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .album-cover-shell {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .song-info {
+    display: contents;
+  }
+
+  .primary-info {
+    grid-column: 3;
+    grid-row: 1;
+    margin-bottom: 0;
+  }
+
+  .expand-btn {
+    grid-column: 4;
+    grid-row: 1;
+  }
+
+  .list-badges {
+    grid-column: 1 / -1;
+    margin-bottom: 0;
+  }
+
+  .secondary-info {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
 }

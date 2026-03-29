@@ -79,8 +79,8 @@ export class SongService {
     }
   }
 
-  getSongsByTrackIds(trackIds: number[]): Song[] {
-    const idSet = new Set(trackIds);
-    return this.sortedSongs().filter((s) => idSet.has(s.trackId));
+  getSongsByPersistentIds(persistentIds: string[]): Song[] {
+    const idSet = new Set(persistentIds);
+    return this.sortedSongs().filter((s) => idSet.has(s.persistentId));
   }
 }

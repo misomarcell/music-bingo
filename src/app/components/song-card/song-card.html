@@ -41,9 +41,6 @@
         <div class="primary-info">
           <span class="song-title">{{ song().name }}</span>
           <span class="song-artist">{{ song().artist }}</span>
-          @if (song().year) {
-            <span class="song-year">{{ song().year }}</span>
-          }
         </div>
         @if (inAnyList) {
           <div class="list-badges">
@@ -51,10 +48,14 @@
             <span class="list-badge-text">{{ listNames }}</span>
           </div>
         }
-        @if (expanded) {
-          <div class="secondary-info">
+        @if (expanded()) {
+          <div class="secondary-info" @expandCollapse>
+            <span class="song-name-detail"><strong>Title:</strong> {{ song().name }}</span>
             @if (song().album) {
               <span><strong>Album:</strong> {{ song().album }}</span>
+            }
+            @if (song().year) {
+              <span><strong>Year:</strong> {{ song().year }}</span>
             }
             @if (song().genre) {
               <span><strong>Genre:</strong> {{ song().genre }}</span>
@@ -71,9 +72,10 @@
             @if (song().dateAdded) {
               <span><strong>Added:</strong> {{ song().dateAdded | date: 'mediumDate' }}</span>
             }
-            @if (song().playCount) {
-              <span><strong>Plays:</strong> {{ song().playCount }}</span>
-            }
+            <span class="persistent-id-detail">
+              <strong>Persistent ID: </strong>
+              <span>{{ song().persistentId }}</span>
+            </span>
             <div class="search-links">
               <a [href]="youtubeSearchUrl" target="_blank" rel="noopener" class="search-link yt">
                 <mat-icon class="search-link-icon">search</mat-icon>
@@ -92,8 +94,8 @@
           </div>
         }
       </div>
-      <button mat-icon-button class="expand-btn" (click)="expanded = !expanded">
-        <mat-icon>{{ expanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+      <button mat-icon-button class="expand-btn" (click)="onExpansionToggle($event)">
+        <mat-icon>{{ expanded() ? 'expand_less' : 'expand_more' }}</mat-icon>
       </button>
     </div>
   </mat-card-content>

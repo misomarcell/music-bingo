@@ -33,6 +33,20 @@ const SORT_OPTIONS: { value: SortField; label: string }[] = [
   { value: 'totalTime', label: 'Length' },
 ];
 
+function normalizePersistentIds(value: unknown): string[] {
+  if (!Array.isArray(value)) return [];
+
+  const ids = new Set<string>();
+  for (const item of value) {
+    if (typeof item !== 'string') continue;
+    const normalized = item.trim().toUpperCase();
+    if (normalized) {
+      ids.add(normalized);
+    }
+  }
+  return [...ids];
+}
+
 @Component({
   selector: 'app-root',
   imports: [
@@ -62,6 +76,7 @@ export class App implements OnInit {
   private readonly dialog = inject(MatDialog);
 
   readonly selectedTabIndex = signal(0);
+  readonly expandedSongPersistentId = signal<string | null>(null);
   private readonly scrollOffsetsByTab = new Map<string, number>();
 
   readonly importedList = signal<SongList | null>(null);
@@ -69,14 +84,14 @@ export class App implements OnInit {
   readonly displayedSongs = computed(() => {
     const imported = this.importedList();
     if (imported && this.selectedTabIndex() === this.listService.lists().length + 1) {
-      return this.songService.getSongsByTrackIds(imported.songTrackIds);
+      return this.songService.getSongsByPersistentIds(imported.songPersistentIds);
     }
     if (this.selectedTabIndex() === 0) {
       return this.songService.sortedSongs();
     }
     const list = this.listService.activeList();
     if (!list) return [];
-    return this.songService.getSongsByTrackIds(list.songTrackIds);
+    return this.songService.getSongsByPersistentIds(list.songPersistentIds);
   });
 
   ngOnInit(): void {
@@ -93,11 +108,13 @@ export class App implements OnInit {
         const json = decompressFromEncodedURIComponent(shared);
         if (json) {
           const parsed = JSON.parse(json);
-          if (parsed.name && Array.isArray(parsed.songTrackIds)) {
+          const importedName = typeof parsed.name === 'string' ? parsed.name.trim() : '';
+          const importedIds = normalizePersistentIds(parsed.songPersistentIds);
+          if (importedName && importedIds.length > 0) {
             this.importedList.set({
               id: 'imported',
-              name: parsed.name,
-              songTrackIds: parsed.songTrackIds,
+              name: importedName,
+              songPersistentIds: importedIds,
             });
             this.selectedTabIndex.set(this.listService.lists().length + 1);
             return;
@@ -136,6 +153,7 @@ export class App implements OnInit {
 
   onTabChange(index: number): void {
     this.saveScrollOffsetForCurrentTab();
+    this.expandedSongPersistentId.set(null);
     const imported = this.importedList();
     const importedTabIndex = imported ? this.listService.lists().length + 1 : -1;
 
@@ -166,15 +184,23 @@ export class App implements OnInit {
     this.restoreScrollOffsetForCurrentTab();
   }
 
-  onListToggle(event: { trackId: number; listId: string }): void {
-    this.listService.toggleSongInList(event.trackId, event.listId);
+  onListToggle(event: { persistentId: string; listId: string }): void {
+    this.listService.toggleSongInList(event.persistentId, event.listId);
   }
 
-  trackBySong(_index: number, song: Song): number {
-    return song.trackId;
+  isSongExpanded(persistentId: string): boolean {
+    return this.expandedSongPersistentId() === persistentId;
   }
 
-  addList(trackId?: number): void {
+  onSongExpansionToggle(persistentId: string): void {
+    this.expandedSongPersistentId.update((current) => (current === persistentId ? null : persistentId));
+  }
+
+  trackBySong(_index: number, song: Song): string {
+    return song.persistentId;
+  }
+
+  addList(persistentId?: string): void {
     const dialogRef = this.dialog.open(ListNameDialog, {
       width: '320px',
       data: { title: 'New List', label: 'List name', confirmText: 'Create' },
@@ -183,8 +209,8 @@ export class App implements OnInit {
       if (name?.trim()) {
         this.listService.createList(name.trim());
         const newList = this.listService.lists()[this.listService.lists().length - 1];
-        if (trackId !== undefined) {
-          this.listService.toggleSongInList(trackId, newList.id);
+        if (persistentId !== undefined) {
+          this.listService.toggleSongInList(persistentId, newList.id);
         }
         this.selectedTabIndex.set(this.listService.lists().length);
         this.updateUrl(newList.id);
@@ -192,8 +218,8 @@ export class App implements OnInit {
     });
   }
 
-  addListWithSong(trackId: number): void {
-    this.addList(trackId);
+  addListWithSong(persistentId: string): void {
+    this.addList(persistentId);
   }
 
   deleteList(id: string): void {
@@ -228,7 +254,7 @@ export class App implements OnInit {
   }
 
   shareList(list: SongList): void {
-    const payload = JSON.stringify({ name: list.name, songTrackIds: list.songTrackIds });
+    const payload = JSON.stringify({ name: list.name, songPersistentIds: list.songPersistentIds });
     const compressed = compressToEncodedURIComponent(payload);
     const url = new URL(window.location.href);
     url.searchParams.delete('list');
@@ -251,8 +277,8 @@ export class App implements OnInit {
     }
     this.listService.createList(name);
     const newList = this.listService.lists()[this.listService.lists().length - 1];
-    for (const trackId of imported.songTrackIds) {
-      this.listService.toggleSongInList(trackId, newList.id);
+    for (const persistentId of imported.songPersistentIds) {
+      this.listService.toggleSongInList(persistentId, newList.id);
     }
     this.importedList.set(null);
     this.clearSharedParam();

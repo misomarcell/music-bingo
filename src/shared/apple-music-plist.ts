@@ -15,6 +15,10 @@ function parseInteger(value: string | undefined): number {
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
+function parsePersistentId(value: string | undefined): string {
+  return (value ?? '').trim().toUpperCase();
+}
+
 function asElement(node: XmlElementLike | null | undefined): XmlElementLike | null {
   if (!node || !node.tagName) return null;
   if (typeof node.nodeType === 'number' && node.nodeType !== ELEMENT_NODE) return null;
@@ -70,10 +74,11 @@ function dictToMap(dict: XmlElementLike): Map<string, string> {
 function parseTrackDict(dict: XmlElementLike): Song | null {
   const data = dictToMap(dict);
   const name = data.get('Name');
-  if (!name) return null;
+  const persistentId = parsePersistentId(data.get('Persistent ID'));
+  if (!name || !persistentId) return null;
 
   return {
-    trackId: parseInteger(data.get('Track ID')),
+    persistentId,
     name,
     artist: data.get('Artist') || 'Unknown',
     albumArtist: data.get('Album Artist') || '',
