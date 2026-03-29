@@ -1,8 +1,15 @@
 :host {
   display: block;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 mat-card {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow: hidden;
   transition:
     box-shadow 0.2s,
     background-color 0.2s;
@@ -22,6 +29,8 @@ mat-card {
   display: flex;
   align-items: flex-start;
   gap: 8px;
+  width: 100%;
+  min-width: 0;
 }
 
 .list-menu-btn {
@@ -63,31 +72,51 @@ mat-card {
 }
 
 .song-info {
-  flex: 1;
+  flex: 1 1 auto;
   min-width: 0;
+  overflow: hidden;
 }
 
 .primary-info {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 8px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'title year'
+    'artist artist';
+  align-items: center;
+  column-gap: 8px;
+  row-gap: 2px;
   margin-bottom: 6px;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .song-title {
+  grid-area: title;
+  min-width: 0;
   font-size: 1.1rem;
   font-weight: 500;
   color: var(--mat-sys-on-surface);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .song-artist {
+  grid-area: artist;
+  min-width: 0;
   font-size: 1rem;
   font-weight: 400;
   color: var(--mat-sys-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .song-year {
+  grid-area: year;
+  flex-shrink: 0;
   font-size: 0.9rem;
   font-weight: 500;
   color: var(--mat-sys-on-surface-variant);

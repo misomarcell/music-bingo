@@ -49,6 +49,7 @@ export class SongCard {
       const trackId = this.song().trackId;
       void trackId;
       this.coverLoadFailed.set(false);
+      this.expanded = false;
     });
   }
 

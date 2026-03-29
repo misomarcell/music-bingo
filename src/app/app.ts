@@ -1,6 +1,6 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ScrollingModule } from '@angular/cdk/scrolling';
+import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -51,6 +51,9 @@ const SORT_OPTIONS: { value: SortField; label: string }[] = [
   styleUrl: './app.scss',
 })
 export class App implements OnInit {
+  @ViewChild(CdkVirtualScrollViewport) private viewport?: CdkVirtualScrollViewport;
+
+  readonly songRowHeight = 96;
   readonly sortOptions = SORT_OPTIONS;
   readonly songService = inject(SongService);
   readonly listService = inject(ListService);
@@ -59,6 +62,7 @@ export class App implements OnInit {
   private readonly dialog = inject(MatDialog);
 
   readonly selectedTabIndex = signal(0);
+  private readonly scrollOffsetsByTab = new Map<string, number>();
 
   readonly importedList = signal<SongList | null>(null);
 
@@ -131,6 +135,7 @@ export class App implements OnInit {
   }
 
   onTabChange(index: number): void {
+    this.saveScrollOffsetForCurrentTab();
     const imported = this.importedList();
     const importedTabIndex = imported ? this.listService.lists().length + 1 : -1;
 
@@ -143,6 +148,7 @@ export class App implements OnInit {
 
     if (index === importedTabIndex) {
       this.updateUrl(null);
+      this.restoreScrollOffsetForCurrentTab();
       return;
     }
 
@@ -156,6 +162,8 @@ export class App implements OnInit {
     } else {
       this.updateUrl(null);
     }
+
+    this.restoreScrollOffsetForCurrentTab();
   }
 
   onListToggle(event: { trackId: number; listId: string }): void {
@@ -264,6 +272,43 @@ export class App implements OnInit {
     const url = new URL(window.location.href);
     url.searchParams.delete('shared');
     window.history.replaceState({}, '', url.toString());
+  }
+
+  private getCurrentTabScrollKey(): string {
+    const selectedIndex = this.selectedTabIndex();
+    if (selectedIndex === 0) {
+      return 'tab:all';
+    }
+
+    const imported = this.importedList();
+    const importedTabIndex = imported ? this.listService.lists().length + 1 : -1;
+    if (selectedIndex === importedTabIndex) {
+      return 'tab:imported';
+    }
+
+    const selectedList = this.listService.lists()[selectedIndex - 1];
+    if (selectedList) {
+      return `tab:list:${selectedList.id}`;
+    }
+
+    return `tab:${selectedIndex}`;
+  }
+
+  private saveScrollOffsetForCurrentTab(): void {
+    const viewport = this.viewport;
+    if (!viewport) return;
+
+    this.scrollOffsetsByTab.set(this.getCurrentTabScrollKey(), viewport.measureScrollOffset('top'));
+  }
+
+  private restoreScrollOffsetForCurrentTab(): void {
+    const viewport = this.viewport;
+    if (!viewport) return;
+
+    const offset = this.scrollOffsetsByTab.get(this.getCurrentTabScrollKey()) ?? 0;
+    requestAnimationFrame(() => {
+      viewport.scrollToOffset(offset);
+    });
   }
 
   onSortChange(field: SortField): void {
