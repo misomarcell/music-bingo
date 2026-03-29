@@ -12,6 +12,7 @@ import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from
 import { SongService } from './services/song.service';
 import { ListService } from './services/list.service';
 import { CommitInfoService } from './services/commit-info.service';
+import { ThemeService } from './services/theme.service';
 import { SongCard } from './components/song-card/song-card';
 import { Song, SongList, SortField } from './models/song';
 import { ListNameDialog } from './components/list-name-dialog';
@@ -51,6 +52,7 @@ export class App implements OnInit {
   readonly songService = inject(SongService);
   readonly listService = inject(ListService);
   readonly commitInfo = inject(CommitInfoService);
+  readonly themeService = inject(ThemeService);
   private readonly dialog = inject(MatDialog);
 
   readonly selectedTabIndex = signal(0);
@@ -267,6 +269,31 @@ export class App implements OnInit {
 
   onSearchChange(query: string): void {
     this.songService.searchQuery.set(query);
+  }
+
+  cycleThemePreference(): void {
+    this.themeService.cyclePreference();
+  }
+
+  get themePreferenceIcon(): string {
+    const preference = this.themeService.preference();
+    if (preference === 'system') {
+      return this.themeService.mode() === 'dark' ? 'light_mode' : 'dark_mode';
+    }
+    if (preference === 'light') return 'light_mode';
+    return 'dark_mode';
+  }
+
+  get themePreferenceTooltip(): string {
+    const preference = this.themeService.preference();
+    if (preference === 'system') {
+      const target = this.themeService.mode() === 'dark' ? 'Light' : 'Dark';
+      return `Theme: System (${this.themeService.mode()}). Click to switch to ${target}.`;
+    }
+    if (preference === 'dark') {
+      return 'Theme: Dark. Click to switch to Light.';
+    }
+    return 'Theme: Light. Click to follow System.';
   }
 
   get sortDirection(): string {

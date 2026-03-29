@@ -16,8 +16,8 @@
       }
     </div>
 
-    <!-- Sort controls + active list indicator -->
-    <div class="sort-bar">
+    <!-- Controls row -->
+    <div class="controls-bar">
       <mat-select
         class="sort-select"
         [value]="songService.sortField()"
@@ -36,6 +36,15 @@
         <mat-icon>{{ sortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
       </button>
       <span class="spacer"></span>
+      <button
+        mat-icon-button
+        class="theme-toggle-btn"
+        (click)="cycleThemePreference()"
+        [matTooltip]="themePreferenceTooltip"
+        [attr.aria-label]="themePreferenceTooltip"
+      >
+        <mat-icon>{{ themePreferenceIcon }}</mat-icon>
+      </button>
     </div>
     <span class="stats">
       {{ songService.totalSongs() }} songs

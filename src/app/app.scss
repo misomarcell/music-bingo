@@ -25,7 +25,7 @@
   top: 0;
   z-index: 50;
   background-color: color-mix(in srgb, var(--mat-sys-primary) 8%, var(--mat-sys-surface));
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--mat-sys-level1);
   margin: -16px -8px 12px;
   padding: 16px 8px 4px;
 }
@@ -95,7 +95,7 @@
   }
 }
 
-.sort-bar {
+.controls-bar {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -112,6 +112,10 @@
     font-size: 0.9rem;
     height: 40px;
     box-sizing: border-box;
+  }
+
+  .theme-toggle-btn {
+    color: var(--mat-sys-on-surface-variant);
   }
 }
 

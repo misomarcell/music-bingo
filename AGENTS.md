@@ -54,6 +54,7 @@ music-bingo/
 │   │   │   ├── xml-parser.service.ts   # Fetches & parses Apple Music plist XML
 │   │   │   ├── song.service.ts         # Song state, sorting, search filtering
 │   │   │   ├── list.service.ts         # List CRUD, song-list membership, localStorage
+│   │   │   ├── theme.service.ts        # Theme preference (system/light/dark), persistence, root class sync
 │   │   │   └── commit-info.service.ts  # Fetches latest commit info from GitHub API
 │   │   ├── components/
 │   │   │   ├── song-card/
@@ -143,6 +144,7 @@ interface SongList {
 - **No `mat-form-field`** for the search bar or sort dropdown — they use plain HTML with border styling to keep it minimal.
 - **Pill/chip style** for tab song counts (`.tab-count-chip`).
 - **SCSS only** — no CSS or Tailwind.
+- **Theme behavior**: The app uses Angular Material M3 light/dark themes. By default it follows `prefers-color-scheme`; users can override via the controls-row theme toggle.
 
 ---
 
