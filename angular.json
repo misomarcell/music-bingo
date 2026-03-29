@@ -52,6 +52,16 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "default.xml",
+                "input": "sources",
+                "output": "sources"
+              },
+              {
+                "glob": "**/*",
+                "input": "sources/album-covers",
+                "output": "album-covers"
               }
             ],
             "styles": ["src/styles.scss"]

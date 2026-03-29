@@ -19,8 +19,11 @@ import { ListNameDialog } from './components/list-name-dialog';
 import { ConfirmDialog } from './components/confirm-dialog';
 import { ShareDialog } from './components/share-dialog';
 
-const GITHUB_RAW_URL =
-  'https://raw.githubusercontent.com/misomarcell/music-bingo/main/sources/default.xml';
+const DEFAULT_XML_PATH = 'sources/default.xml';
+
+function resolveAssetUrl(relativePath: string): string {
+  return new URL(relativePath, document.baseURI).toString();
+}
 
 const SORT_OPTIONS: { value: SortField; label: string }[] = [
   { value: 'name', label: 'Title' },
@@ -73,7 +76,7 @@ export class App implements OnInit {
   });
 
   ngOnInit(): void {
-    this.songService.loadSongs(GITHUB_RAW_URL);
+    this.songService.loadSongs(resolveAssetUrl(DEFAULT_XML_PATH));
     this.restoreTabFromUrl();
   }
 

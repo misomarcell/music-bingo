@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, computed, effect, input, output, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
@@ -6,6 +6,10 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Song, SongList } from '../../models/song';
+
+function resolveAssetUrl(relativePath: string): string {
+  return new URL(relativePath, document.baseURI).toString();
+}
 
 @Component({
   selector: 'app-song-card',
@@ -26,8 +30,27 @@ export class SongCard {
   readonly songListIds = input<string[]>([]);
   readonly listToggled = output<{ trackId: number; listId: string }>();
   readonly createListRequested = output<number>();
+  readonly coverLoadFailed = signal(false);
+  readonly albumCoverUrl = computed(() =>
+    resolveAssetUrl(`album-covers/${this.song().trackId}.jpeg`),
+  );
+  readonly albumCoverAlt = computed(() => {
+    const song = this.song();
+    if (song.album) {
+      return `${song.album} cover art`;
+    }
+    return `${song.artist} cover art`;
+  });
 
   expanded = false;
+
+  constructor() {
+    effect(() => {
+      const trackId = this.song().trackId;
+      void trackId;
+      this.coverLoadFailed.set(false);
+    });
+  }
 
   isInList(listId: string): boolean {
     return this.songListIds().includes(listId);
@@ -52,6 +75,10 @@ export class SongCard {
 
   onCreateList(): void {
     this.createListRequested.emit(this.song().trackId);
+  }
+
+  onCoverLoadError(): void {
+    this.coverLoadFailed.set(true);
   }
 
   get searchQuery(): string {

@@ -1,52 +1,66 @@
-# 🎵 Music Bingo
+# Music Bingo
 
-A web app for organizing songs from your Apple Music library into custom bingo lists. Add songs to multiple lists via a dropdown menu on each card, sort, search, rename and delete lists, and share them via URL.
+A web app for organizing songs from an Apple Music library export into custom bingo lists.
 
-**Live:** [https://misomarcell.github.io/music-bingo/](https://misomarcell.github.io/music-bingo/)
+Live: https://misomarcell.github.io/music-bingo/
 
 ## Features
 
-- **Song cards** with title, artist, album, genre, year, duration, and more
-- **Per-song list dropdown** — add/remove a song from any list directly from its card
-- **Multiple lists** — create, rename, and delete custom lists via tabs
-- **List header** — shows list name, song count, rename and delete actions when a list tab is selected
-- **Search** — filter songs by title, artist, or album
-- **Sort** — by title, artist, year, date added, bit rate, or length (ascending/descending; default: date added, newest first)
-- **Sticky controls** — search and sort stay pinned at the top while scrolling
-- **Virtual scrolling** — only visible song cards are rendered for smooth performance with large libraries
-- **URL sharing** — append `?list=<id>` to link directly to a specific list, or share a compressed list via `?shared=` URL
-- **List sharing** — share any list as a compressed URL; recipients can preview the shared songs and save the list to their own localStorage
-- **Persistent state** — all lists and song assignments are saved in localStorage
-- **Commit info** — last deploy commit hash (linked to GitHub) and date shown in the controls panel
-- **Auto-deploy** — pushes to `main` trigger GitHub Actions deployment to GitHub Pages
-
-## How It Works
-
-The app reads songs from `sources/default.xml` (an Apple Music library export in plist format) hosted in this repository. Songs are displayed as cards — use the playlist icon on each card to add it to one or more lists.
-
-## Updating the Song List
-
-1. In Apple Music, go to **File → Library → Export Library…**
-2. Save the file as `default.xml`
-3. Replace `sources/default.xml` in this repository
-4. Commit and push — the site will redeploy automatically via GitHub Actions
-
-> **Note:** The XML file is an Apple Music plist export. Only the `<dict>` entries under the `Tracks` key are used. Each track should have at minimum a `Name` field.
+- Song cards with metadata, list assignment menu, and expandable details
+- Multiple lists with create/rename/delete
+- Search + sort + sticky controls
+- Virtual scrolling for large libraries
+- URL sharing for both active lists and compressed shared-list payloads
+- Local persistence via `localStorage`
+- Album cover thumbnails loaded directly from `sources/album-covers/<trackId>.jpeg`
 
 ## Development
 
 ```bash
-npm install
-ng serve
+npm ci
+npx ng serve
 ```
 
-## Deploying
-
-The app auto-deploys to GitHub Pages on every push to `main` via the workflow in `.github/workflows/deploy.yml`.
-
-To deploy manually:
+Quality gates:
 
 ```bash
-ng build --configuration production
-# Output is in dist/music-bingo/browser/
+npm run lint
+npm run build
 ```
+
+## Data Source
+
+The app reads songs from `sources/default.xml` (Apple Music plist XML) as a static asset:
+- Local dev (`ng serve`): reads local repo file.
+- Deployed app (GitHub Pages): reads the same file from the GitHub Pages URL.
+
+To update:
+1. Export your Apple Music library.
+2. Replace `sources/default.xml`.
+3. Commit and push.
+
+## Collecting Album Covers
+
+Use the Discogs collector script to download missing album covers into `sources/album-covers`.
+
+1. Create a `.env` file in repo root:
+
+```bash
+DISCOGS_TOKEN=your_discogs_user_token
+```
+
+2. Run:
+
+```bash
+npm run collect
+```
+
+What it does:
+- Parses `sources/default.xml` with the same shared parser logic used by the app
+- For each song, checks if `sources/album-covers/<trackId>.jpeg` already exists
+- If missing, searches Discogs for that song's album and downloads the image to `sources/album-covers/<trackId>.jpeg`
+- Prints `[missing] Artist - Album` when a cover is missing both locally and on Discogs
+
+## Deploy
+
+Push to `main` to trigger GitHub Actions deployment to GitHub Pages (`.github/workflows/deploy.yml`).

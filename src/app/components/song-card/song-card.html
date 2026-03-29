@@ -23,6 +23,20 @@
           <span>New list</span>
         </button>
       </mat-menu>
+      <div class="album-cover-shell">
+        @if (!coverLoadFailed()) {
+          <img
+            class="album-cover-image"
+            [src]="albumCoverUrl()"
+            [alt]="albumCoverAlt()"
+            loading="lazy"
+            decoding="async"
+            (error)="onCoverLoadError()"
+          />
+        } @else {
+          <mat-icon class="album-cover-fallback-icon">album</mat-icon>
+        }
+      </div>
       <div class="song-info">
         <div class="primary-info">
           <span class="song-title">{{ song().name }}</span>
