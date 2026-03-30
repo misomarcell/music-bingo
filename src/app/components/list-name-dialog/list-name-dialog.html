@@ -1,0 +1,13 @@
+<h2 mat-dialog-title>{{ data.title }}</h2>
+<mat-dialog-content>
+  <mat-form-field class="full-width">
+    <mat-label>{{ data.label }}</mat-label>
+    <input matInput [(ngModel)]="listName" (keydown.enter)="submit()" cdkFocusInitial />
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-flat-button [disabled]="!listName.trim()" (click)="submit()">
+    {{ data.confirmText }}
+  </button>
+</mat-dialog-actions>

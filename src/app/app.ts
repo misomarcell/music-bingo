@@ -16,9 +16,9 @@ import { ThemeService } from './services/theme.service';
 import { PwaUpdateService } from './services/pwa-update.service';
 import { SongCard } from './components/song-card/song-card';
 import { Song, SongList, SortField } from './models/song';
-import { ListNameDialog } from './components/list-name-dialog';
-import { ConfirmDialog } from './components/confirm-dialog';
-import { ShareDialog } from './components/share-dialog';
+import { ListNameDialog } from './components/list-name-dialog/list-name-dialog';
+import { ConfirmDialog } from './components/confirm-dialog/confirm-dialog';
+import { ShareDialog } from './components/share-dialog/share-dialog';
 
 const DEFAULT_XML_PATH = 'sources/default.xml';
 

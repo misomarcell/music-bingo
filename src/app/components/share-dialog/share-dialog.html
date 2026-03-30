@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>Share List</h2>
+<mat-dialog-content>
+  <p>Copy this link and send it to share your list:</p>
+  <mat-form-field class="share-url-field">
+    <input matInput [value]="data.url" readonly #urlInput />
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Close</button>
+  <button mat-flat-button (click)="copyUrl(urlInput)" [class.copied]="copied()">
+    <mat-icon>{{ copied() ? 'check' : 'content_copy' }}</mat-icon>
+    {{ copied() ? 'Copied!' : 'Copy' }}
+  </button>
+</mat-dialog-actions>
