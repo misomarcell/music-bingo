@@ -7,6 +7,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Song, SongList } from '../../models/song';
+import { HighlightMatchPipe } from '../../pipes/highlight-match.pipe';
 
 function resolveAssetUrl(relativePath: string): string {
   return new URL(relativePath, document.baseURI).toString();
@@ -37,6 +38,7 @@ function resolveAssetUrl(relativePath: string): string {
     MatMenuModule,
     MatButtonModule,
     MatIconModule,
+    HighlightMatchPipe,
     DatePipe,
   ],
   templateUrl: './song-card.html',
@@ -46,6 +48,7 @@ export class SongCard {
   readonly song = input.required<Song>();
   readonly lists = input.required<SongList[]>();
   readonly songListIds = input<string[]>([]);
+  readonly highlightQuery = input('');
   readonly expanded = input(false);
   readonly listToggled = output<{ persistentId: string; listId: string }>();
   readonly expansionToggled = output<string>();

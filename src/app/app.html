@@ -169,6 +169,7 @@
         [song]="song"
         [lists]="listService.lists()"
         [songListIds]="listService.getSongListIds(song.persistentId)"
+        [highlightQuery]="songService.searchQuery()"
         [expanded]="isSongExpanded(song.persistentId)"
         (listToggled)="onListToggle($event)"
         (expansionToggled)="onSongExpansionToggle($event)"

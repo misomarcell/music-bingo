@@ -45,3 +45,10 @@ body {
   margin: 0;
   height: 100%;
 }
+
+.search-highlight {
+  background: color-mix(in srgb, var(--mat-sys-primary) 28%, transparent);
+  color: inherit;
+  border-radius: 3px;
+  padding: 0 1px;
+}

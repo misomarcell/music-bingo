@@ -39,8 +39,14 @@
       </div>
       <div class="song-info">
         <div class="primary-info">
-          <span class="song-title">{{ song().name }}</span>
-          <span class="song-artist">{{ song().artist }}</span>
+          <span
+            class="song-title"
+            [innerHTML]="song().name | highlightMatch: highlightQuery()"
+          ></span>
+          <span
+            class="song-artist"
+            [innerHTML]="song().artist | highlightMatch: highlightQuery()"
+          ></span>
         </div>
         @if (inAnyList) {
           <div class="list-badges">
@@ -50,9 +56,15 @@
         }
         @if (expanded()) {
           <div class="secondary-info" @expandCollapse>
-            <span class="song-name-detail"><strong>Title:</strong> {{ song().name }}</span>
+            <span class="song-name-detail">
+              <strong>Title:</strong>
+              <span [innerHTML]="song().name | highlightMatch: highlightQuery()"></span>
+            </span>
             @if (song().album) {
-              <span><strong>Album:</strong> {{ song().album }}</span>
+              <span>
+                <strong>Album:</strong>
+                <span [innerHTML]="song().album | highlightMatch: highlightQuery()"></span>
+              </span>
             }
             @if (song().year) {
               <span><strong>Year:</strong> {{ song().year }}</span>
@@ -61,7 +73,10 @@
               <span><strong>Genre:</strong> {{ song().genre }}</span>
             }
             @if (song().composer) {
-              <span><strong>Composer:</strong> {{ song().composer }}</span>
+              <span>
+                <strong>Composer:</strong>
+                <span [innerHTML]="song().composer | highlightMatch: highlightQuery()"></span>
+              </span>
             }
             @if (song().totalTime) {
               <span><strong>Length:</strong> {{ formatDuration(song().totalTime) }}</span>
