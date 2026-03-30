@@ -13,6 +13,7 @@ import { SongService } from './services/song.service';
 import { ListService } from './services/list.service';
 import { CommitInfoService } from './services/commit-info.service';
 import { ThemeService } from './services/theme.service';
+import { PwaUpdateService } from './services/pwa-update.service';
 import { SongCard } from './components/song-card/song-card';
 import { Song, SongList, SortField } from './models/song';
 import { ListNameDialog } from './components/list-name-dialog';
@@ -73,6 +74,7 @@ export class App implements OnInit {
   readonly listService = inject(ListService);
   readonly commitInfo = inject(CommitInfoService);
   readonly themeService = inject(ThemeService);
+  private readonly pwaUpdate = inject(PwaUpdateService);
   private readonly dialog = inject(MatDialog);
 
   readonly selectedTabIndex = signal(0);
@@ -96,6 +98,7 @@ export class App implements OnInit {
 
   ngOnInit(): void {
     this.songService.loadSongs(resolveAssetUrl(DEFAULT_XML_PATH));
+    this.pwaUpdate.start();
     this.restoreTabFromUrl();
   }
 

@@ -13,6 +13,7 @@ Live: https://misomarcell.github.io/music-bingo/
 - URL sharing for both active lists and compressed shared-list payloads
 - Local persistence via `localStorage`
 - Album cover thumbnails loaded directly from `sources/album-covers/<persistentId>.jpeg`
+- PWA + service worker support for offline shell usage and cached album covers
 
 ## Development
 
@@ -64,3 +65,14 @@ What it does:
 ## Deploy
 
 Push to `main` to trigger GitHub Actions deployment to GitHub Pages (`.github/workflows/deploy.yml`).
+
+## PWA / Offline Caching
+
+Production builds include Angular Service Worker (`ngsw`) with:
+
+- App-shell prefetch caching (`index`, JS/CSS bundles, manifest, icons)
+- Lazy caching for `sources/default.xml`
+- Lazy caching for `album-covers/**` so viewed covers are available offline
+- Runtime caching for Google Fonts and commit metadata API requests
+
+When a new app version is available, the app prompts to reload so users can activate the update.

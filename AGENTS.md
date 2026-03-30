@@ -12,6 +12,11 @@ Album cover workflow:
   - Local dev reads local files.
   - Deployed app reads from GitHub Pages URL.
 
+PWA/service-worker workflow:
+- Production builds generate Angular Service Worker (`ngsw`) from `ngsw-config.json`.
+- App shell assets are prefetched; album covers are cached lazily after first view.
+- The app checks for new versions and prompts reload when an update is ready.
+
 Live URL: https://misomarcell.github.io/music-bingo/  
 Repository: https://github.com/misomarcell/music-bingo
 
@@ -35,6 +40,7 @@ Repository: https://github.com/misomarcell/music-bingo
 | UI | Angular Material 21.2.4 (M3) |
 | Styling | SCSS + `--mat-sys-*` tokens |
 | State | Angular Signals |
+| PWA | Angular Service Worker (`@angular/service-worker`) |
 | Data Source | Apple Music plist XML (`sources/default.xml`) |
 | Sharing | `lz-string` URL payloads |
 | Album Collector | Node script + Discogs API (`scripts/collect-album-covers.ts`) |
@@ -83,6 +89,10 @@ music-bingo/
   - If missing, search Discogs and download cover to that exact path.
   - If Discogs has no cover, print `[missing] Artist - Album`.
 - Song card cover URL is deterministic: `album-covers/${persistentId}.jpeg`.
+- Service worker cache strategy:
+  - App shell files are prefetched.
+  - `sources/default.xml` is cached lazily.
+  - `album-covers/**` is cached lazily for offline reuse.
 
 ---
 
