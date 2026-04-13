@@ -4,7 +4,7 @@
 <dict>
 	<key>Major Version</key><integer>1</integer>
 	<key>Minor Version</key><integer>1</integer>
-	<key>Date</key><date>2026-04-10T10:16:34Z</date>
+	<key>Date</key><date>2026-04-13T16:55:17Z</date>
 	<key>Application Version</key><string>1.2.5.7</string>
 	<key>Features</key><integer>5</integer>
 	<key>Show Content Ratings</key><true/>
@@ -29620,6 +29620,33 @@
 			<key>File Folder Count</key><integer>-1</integer>
 			<key>Library Folder Count</key><integer>-1</integer>
 		</dict>
+		<key>89009</key>
+		<dict>
+			<key>Track ID</key><integer>89009</integer>
+			<key>Name</key><string>Physical</string>
+			<key>Artist</key><string>Olivia Newton-John</string>
+			<key>Album Artist</key><string>Olivia Newton-John</string>
+			<key>Composer</key><string>Steve Kipner Terry Shadick</string>
+			<key>Album</key><string>Physical</string>
+			<key>Genre</key><string>Pop</string>
+			<key>Kind</key><string>AIFF audio file</string>
+			<key>Size</key><integer>43925770</integer>
+			<key>Total Time</key><integer>225992</integer>
+			<key>Track Number</key><integer>1</integer>
+			<key>Track Count</key><integer>2</integer>
+			<key>Year</key><integer>1981</integer>
+			<key>Date Modified</key><date>2026-04-10T10:52:37Z</date>
+			<key>Date Added</key><date>2026-04-13T16:51:57Z</date>
+			<key>Bit Rate</key><integer>1536</integer>
+			<key>Sample Rate</key><integer>48000</integer>
+			<key>Comments</key><string>MCA-51182 / MCA Records</string>
+			<key>Artwork Count</key><integer>1</integer>
+			<key>Persistent ID</key><string>0E7B6CBA1C58FA24</string>
+			<key>Track Type</key><string>File</string>
+			<key>Location</key><string>file:///Volumes/T7%20Shield/muzik/songs/flash%20fm/Olivia%20Newton-John%20-%20Physical.aiff</string>
+			<key>File Folder Count</key><integer>-1</integer>
+			<key>Library Folder Count</key><integer>-1</integer>
+		</dict>
 	</dict>
 	<key>Playlists</key>
 	<array>
@@ -30791,6 +30818,9 @@
 				</dict>
 				<dict>
 					<key>Track ID</key><integer>32102</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>89009</integer>
 				</dict>
 				<dict>
 					<key>Track ID</key><integer>25866</integer>
