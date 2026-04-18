@@ -75,9 +75,12 @@
               [value]="sourceService.activeSource()"
               (selectionChange)="onSourceChange($event.value)"
               (click)="$event.stopPropagation()"
+              panelWidth="null"
             >
-              @for (src of sourceService.sources(); track src) {
-                <mat-option [value]="src">{{ sourceService.sourceLabel(src) }}</mat-option>
+              @for (src of sourceService.sources(); track src.file) {
+                <mat-option [value]="src.file">{{
+                  src.label || sourceService.sourceLabel(src.file)
+                }}</mat-option>
               }
             </mat-select>
           } @else {

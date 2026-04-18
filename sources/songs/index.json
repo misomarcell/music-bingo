@@ -1,1 +1,5 @@
-["default.xml", "pop.xml", "rock.xml"]
+[
+  { "file": "default.xml", "label": "All Songs" },
+  { "file": "pop.xml", "label": "Pop" },
+  { "file": "rock.xml", "label": "Rock" }
+]

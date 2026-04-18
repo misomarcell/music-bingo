@@ -182,10 +182,13 @@
   color: inherit;
   padding: 0;
   min-width: 80px;
-  max-width: 140px;
 
   ::ng-deep .mat-mdc-select-trigger {
     padding: 0;
+  }
+
+  ::ng-deep .mat-mdc-select-panel {
+    min-width: fit-content !important;
   }
 }
 

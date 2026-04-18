@@ -403,9 +403,38 @@ collectMissingAlbumCovers()
     process.exitCode = 1;
   });
 
+interface ManifestEntry {
+  file: string;
+  label?: string;
+}
+
 async function updateManifest(): Promise<void> {
+  let existing: ManifestEntry[] = [];
+  try {
+    const raw = await readFile(MANIFEST_PATH, 'utf8');
+    const parsed: unknown = JSON.parse(raw);
+    if (Array.isArray(parsed)) {
+      existing = parsed
+        .filter(
+          (e): e is ManifestEntry =>
+            !!e &&
+            typeof e === 'object' &&
+            typeof (e as Record<string, unknown>)['file'] === 'string',
+        )
+        .map((e) => ({ file: e.file, ...(e.label ? { label: e.label } : {}) }));
+    }
+  } catch {
+    // No existing manifest
+  }
+
+  const labelsByFile = new Map(existing.filter((e) => e.label).map((e) => [e.file, e.label]));
   const files = await readdir(SONGS_DIR);
   const xmlFiles = files.filter((f: string) => f.endsWith('.xml')).sort();
-  await writeFile(MANIFEST_PATH, JSON.stringify(xmlFiles, null, 2) + '\n');
-  console.log(`\nUpdated manifest with ${xmlFiles.length} source(s): ${xmlFiles.join(', ')}`);
+  const entries: ManifestEntry[] = xmlFiles.map((f) => {
+    const label = labelsByFile.get(f);
+    return label ? { file: f, label } : { file: f };
+  });
+
+  await writeFile(MANIFEST_PATH, JSON.stringify(entries, null, 2) + '\n');
+  console.log(`\nUpdated manifest with ${entries.length} source(s): ${xmlFiles.join(', ')}`);
 }
