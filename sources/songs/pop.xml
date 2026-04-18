@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>Major Version</key>
+        <integer>1</integer>
+        <key>Minor Version</key>
+        <integer>1</integer>
+        <key>Date</key>
+        <date>2026-04-18T13:08:04Z</date>
+        <key>Application Version</key>
+        <string>1.2.5.7</string>
+        <key>Features</key>
+        <integer>5</integer>
+        <key>Show Content Ratings</key>
+        <true />
+        <key>Music Folder</key>
+        <string>file:///Users/balazsfoky/Music/Music/Media.localized/</string>
+        <key>Library Persistent ID</key>
+        <string>DF4FBDF9AE28908C</string>
+        <key>Tracks</key>
+        <dict>
+            <key>7415</key>
+            <dict>
+                <key>Track ID</key>
+                <integer>7415</integer>
+                <key>Name</key>
+                <string>Holiday road</string>
+                <key>Artist</key>
+                <string>Lindsey Buckingham</string>
+                <key>Album Artist</key>
+                <string>Lindsey Buckingham</string>
+                <key>Album</key>
+                <string>Holiday road</string>
+                <key>Genre</key>
+                <string>Pop</string>
+                <key>Kind</key>
+                <string>AIFF audio file</string>
+                <key>Size</key>
+                <integer>25623454</integer>
+                <key>Total Time</key>
+                <integer>130826</integer>
+                <key>Track Number</key>
+                <integer>1</integer>
+                <key>Track Count</key>
+                <integer>2</integer>
+                <key>Year</key>
+                <integer>1983</integer>
+                <key>Date Modified</key>
+                <date>2023-08-20T12:34:47Z</date>
+                <key>Date Added</key>
+                <date>2023-12-17T16:40:23Z</date>
+                <key>Bit Rate</key>
+                <integer>1536</integer>
+                <key>Sample Rate</key>
+                <integer>48000</integer>
+                <key>Comments</key>
+                <string>92 95707 / Warner Bros. Records</string>
+                <key>Play Count</key>
+                <integer>2</integer>
+                <key>Play Date</key>
+                <integer>3806424078</integer>
+                <key>Play Date UTC</key>
+                <date>2024-08-13T18:01:18Z</date>
+                <key>Artwork Count</key>
+                <integer>1</integer>
+                <key>Persistent ID</key>
+                <string>E87CB9ABC0CBD609</string>
+                <key>Track Type</key>
+                <string>File</string>
+                <key>Location</key>
+                <string>
+                    file:///Volumes/T7%20Shield/muzik/songs/flash%20fm/Lindsey%20Buckingham%20-%20Holiday%20road.aiff</string>
+                <key>File Folder Count</key>
+                <integer>-1</integer>
+                <key>Library Folder Count</key>
+                <integer>-1</integer>
+            </dict>
+            <key>7419</key>
+            <dict>
+                <key>Track ID</key>
+                <integer>7419</integer>
+                <key>Name</key>
+                <string>Escape (The Piña Colada song) (album version)</string>
+                <key>Artist</key>
+                <string>Rupert Holmes</string>
+                <key>Album Artist</key>
+                <string>Rupert Holmes</string>
+                <key>Album</key>
+                <string>Partners In Crime</string>
+                <key>Genre</key>
+                <string>Pop</string>
+                <key>Kind</key>
+                <string>AIFF audio file</string>
+                <key>Size</key>
+                <integer>52753116</integer>
+                <key>Total Time</key>
+                <integer>271426</integer>
+                <key>Track Number</key>
+                <integer>1</integer>
+                <key>Track Count</key>
+                <integer>10</integer>
+                <key>Year</key>
+                <integer>1979</integer>
+                <key>Date Modified</key>
+                <date>2023-08-20T12:38:51Z</date>
+                <key>Date Added</key>
+                <date>2023-12-17T16:40:43Z</date>
+                <key>Bit Rate</key>
+                <integer>1536</integer>
+                <key>Sample Rate</key>
+                <integer>48000</integer>
+                <key>Comments</key>
+                <string>MCF 3051 / MCA Records</string>
+                <key>Play Count</key>
+                <integer>2</integer>
+                <key>Play Date</key>
+                <integer>3806424353</integer>
+                <key>Play Date UTC</key>
+                <date>2024-08-13T18:05:53Z</date>
+                <key>Artwork Count</key>
+                <integer>1</integer>
+                <key>Persistent ID</key>
+                <string>59CE08FB1FFD9A8E</string>
+                <key>Track Type</key>
+                <string>File</string>
+                <key>Location</key>
+                <string>
+                    file:///Volumes/T7%20Shield/muzik/songs/flash%20fm/Rupert%20Holmes%20-%20Escape%20(The%20Pin%CC%83a%20Colada%20song)%20(album%20version).aiff</string>
+                <key>File Folder Count</key>
+                <integer>-1</integer>
+                <key>Library Folder Count</key>
+                <integer>-1</integer>
+            </dict>
+            <key>7425</key>
+            <dict>
+                <key>Track ID</key>
+                <integer>7425</integer>
+                <key>Name</key>
+                <string>Kokomo</string>
+                <key>Artist</key>
+                <string>The Beach Boys</string>
+                <key>Album Artist</key>
+                <string>The Beach Boys</string>
+                <key>Album</key>
+                <string>Kokomo</string>
+                <key>Genre</key>
+                <string>Pop</string>
+                <key>Kind</key>
+                <string>AIFF audio file</string>
+                <key>Size</key>
+                <integer>41936446</integer>
+                <key>Total Time</key>
+                <integer>215186</integer>
+                <key>Track Number</key>
+                <integer>1</integer>
+                <key>Track Count</key>
+                <integer>2</integer>
+                <key>Year</key>
+                <integer>1988</integer>
+                <key>BPM</key>
+                <integer>116</integer>
+                <key>Date Modified</key>
+                <date>2023-04-23T15:22:49Z</date>
+                <key>Date Added</key>
+                <date>2023-12-17T16:41:07Z</date>
+                <key>Bit Rate</key>
+                <integer>1536</integer>
+                <key>Sample Rate</key>
+                <integer>48000</integer>
+                <key>Comments</key>
+                <string>969 385-7 / Elektra</string>
+                <key>Play Count</key>
+                <integer>2</integer>
+                <key>Play Date</key>
+                <integer>3806505985</integer>
+                <key>Play Date UTC</key>
+                <date>2024-08-14T16:46:25Z</date>
+                <key>Artwork Count</key>
+                <integer>1</integer>
+                <key>Persistent ID</key>
+                <string>DFDD890A4D0C1C65</string>
+                <key>Track Type</key>
+                <string>File</string>
+                <key>Location</key>
+                <string>
+                    file:///Volumes/T7%20Shield/muzik/songs/flash%20fm/The%20Beach%20Boys%20-%20Kokomo.aiff</string>
+                <key>File Folder Count</key>
+                <integer>-1</integer>
+                <key>Library Folder Count</key>
+                <integer>-1</integer>
+            </dict>
+        </dict>
+    </dict>
+</plist>

@@ -69,7 +69,20 @@
       <mat-tab>
         <ng-template mat-tab-label>
           <mat-icon class="tab-icon">library_music</mat-icon>
-          All Songs
+          @if (sourceService.sources().length > 1) {
+            <mat-select
+              class="source-select"
+              [value]="sourceService.activeSource()"
+              (selectionChange)="onSourceChange($event.value)"
+              (click)="$event.stopPropagation()"
+            >
+              @for (src of sourceService.sources(); track src) {
+                <mat-option [value]="src">{{ sourceService.sourceLabel(src) }}</mat-option>
+              }
+            </mat-select>
+          } @else {
+            {{ sourceService.activeSourceLabel() }}
+          }
         </ng-template>
       </mat-tab>
 

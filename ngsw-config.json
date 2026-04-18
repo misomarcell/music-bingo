@@ -23,7 +23,7 @@
       "installMode": "lazy",
       "updateMode": "prefetch",
       "resources": {
-        "files": ["/sources/default.xml"]
+        "files": ["/sources/songs/**"]
       }
     },
     {

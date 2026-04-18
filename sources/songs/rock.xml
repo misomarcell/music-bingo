@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>Major Version</key>
+        <integer>1</integer>
+        <key>Minor Version</key>
+        <integer>1</integer>
+        <key>Date</key>
+        <date>2026-04-18T13:08:04Z</date>
+        <key>Application Version</key>
+        <string>1.2.5.7</string>
+        <key>Features</key>
+        <integer>5</integer>
+        <key>Show Content Ratings</key>
+        <true />
+        <key>Music Folder</key>
+        <string>file:///Users/balazsfoky/Music/Music/Media.localized/</string>
+        <key>Library Persistent ID</key>
+        <string>DF4FBDF9AE28908C</string>
+        <key>Tracks</key>
+        <dict>
+            <key>7423</key>
+            <dict>
+                <key>Track ID</key>
+                <integer>7423</integer>
+                <key>Name</key>
+                <string>Come and get your love</string>
+                <key>Artist</key>
+                <string>Redbone</string>
+                <key>Album Artist</key>
+                <string>Redbone</string>
+                <key>Composer</key>
+                <string>Lolly Vegas</string>
+                <key>Album</key>
+                <string>Come and get your love</string>
+                <key>Genre</key>
+                <string>Rock Funk / Soul Pop</string>
+                <key>Kind</key>
+                <string>AIFF audio file</string>
+                <key>Size</key>
+                <integer>41783506</integer>
+                <key>Total Time</key>
+                <integer>214666</integer>
+                <key>Track Number</key>
+                <integer>1</integer>
+                <key>Track Count</key>
+                <integer>2</integer>
+                <key>Year</key>
+                <integer>1973</integer>
+                <key>Date Modified</key>
+                <date>2023-08-20T12:56:25Z</date>
+                <key>Date Added</key>
+                <date>2023-12-17T16:40:58Z</date>
+                <key>Bit Rate</key>
+                <integer>1536</integer>
+                <key>Sample Rate</key>
+                <integer>48000</integer>
+                <key>Comments</key>
+                <string>5-11035 / Epic</string>
+                <key>Play Count</key>
+                <integer>2</integer>
+                <key>Play Date</key>
+                <integer>3820293146</integer>
+                <key>Play Date UTC</key>
+                <date>2025-01-21T07:32:26Z</date>
+                <key>Artwork Count</key>
+                <integer>1</integer>
+                <key>Persistent ID</key>
+                <string>FF832889ECB117E5</string>
+                <key>Track Type</key>
+                <string>File</string>
+                <key>Location</key>
+                <string>
+                    file:///Volumes/T7%20Shield/muzik/songs/flash%20fm/Redbone%20-%20Come%20and%20get%20your%20love.aiff</string>
+                <key>File Folder Count</key>
+                <integer>-1</integer>
+                <key>Library Folder Count</key>
+                <integer>-1</integer>
+            </dict>
+            <key>7417</key>
+            <dict>
+                <key>Track ID</key>
+                <integer>7417</integer>
+                <key>Name</key>
+                <string>Living in America</string>
+                <key>Artist</key>
+                <string>James Brown</string>
+                <key>Album Artist</key>
+                <string>James Brown</string>
+                <key>Composer</key>
+                <string>Dan Hartman</string>
+                <key>Album</key>
+                <string>Living in America</string>
+                <key>Genre</key>
+                <string>Funk</string>
+                <key>Kind</key>
+                <string>AIFF audio file</string>
+                <key>Size</key>
+                <integer>48300616</integer>
+                <key>Total Time</key>
+                <integer>248960</integer>
+                <key>Track Number</key>
+                <integer>1</integer>
+                <key>Track Count</key>
+                <integer>2</integer>
+                <key>Year</key>
+                <integer>1985</integer>
+                <key>Date Modified</key>
+                <date>2023-07-27T09:26:49Z</date>
+                <key>Date Added</key>
+                <date>2023-12-17T16:40:36Z</date>
+                <key>Bit Rate</key>
+                <integer>1536</integer>
+                <key>Sample Rate</key>
+                <integer>48000</integer>
+                <key>Comments</key>
+                <string>SCTA 6701 / Scotti Bros. Records</string>
+                <key>Play Count</key>
+                <integer>1</integer>
+                <key>Play Date</key>
+                <integer>3793633523</integer>
+                <key>Play Date UTC</key>
+                <date>2024-03-18T18:05:23Z</date>
+                <key>Artwork Count</key>
+                <integer>1</integer>
+                <key>Persistent ID</key>
+                <string>49E1EF9650CFC1D6</string>
+                <key>Track Type</key>
+                <string>File</string>
+                <key>Location</key>
+                <string>
+                    file:///Volumes/T7%20Shield/muzik/songs/flash%20fm/James%20Brown%20-%20Living%20in%20America.aiff</string>
+                <key>File Folder Count</key>
+                <integer>-1</integer>
+                <key>Library Folder Count</key>
+                <integer>-1</integer>
+            </dict>
+        </dict>
+    </dict>
+</plist>

@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { constants as fsConstants } from 'fs';
-import { access, copyFile, mkdir, readFile, rename, writeFile } from 'fs/promises';
+import { access, copyFile, mkdir, readdir, readFile, rename, writeFile } from 'fs/promises';
 import path from 'path';
 import { DOMParser } from '@xmldom/xmldom';
 import { Song } from '../src/app/models/song';
@@ -15,7 +15,9 @@ const DISCOGS_SEARCH_PAGE_SIZE = 25;
 const DISCOGS_MAX_CANDIDATES = 8;
 const DISCOGS_USER_AGENT = 'music-bingo-collector/1.0 +https://github.com/misomarcell/music-bingo';
 
-const XML_PATH = path.resolve(process.cwd(), 'sources/default.xml');
+const XML_PATH = path.resolve(process.cwd(), 'sources/songs/default.xml');
+const SONGS_DIR = path.resolve(process.cwd(), 'sources/songs');
+const MANIFEST_PATH = path.resolve(SONGS_DIR, 'index.json');
 const ALBUM_COVERS_DIR = path.resolve(process.cwd(), 'sources/album-covers');
 
 interface SongCoverTask {
@@ -297,7 +299,9 @@ async function downloadCoverImage(imageUrl: string, filePath: string): Promise<v
 async function collectMissingAlbumCovers(): Promise<void> {
   const token = process.env['DISCOGS_TOKEN']?.trim();
   if (!token) {
-    throw new Error('Missing DISCOGS_TOKEN. Add it to your .env file before running npm run collect.');
+    throw new Error(
+      'Missing DISCOGS_TOKEN. Add it to your .env file before running npm run collect.',
+    );
   }
 
   await mkdir(ALBUM_COVERS_DIR, { recursive: true });
@@ -376,7 +380,10 @@ async function collectMissingAlbumCovers(): Promise<void> {
       console.log(`[downloaded] ${task.artist} - ${task.album} -> ${fileName}`);
     } catch (error) {
       failed++;
-      console.error(`[error] ${task.artist} - ${task.album} (persistent ${task.persistentId}):`, error);
+      console.error(
+        `[error] ${task.artist} - ${task.album} (persistent ${task.persistentId}):`,
+        error,
+      );
     }
   }
 
@@ -389,7 +396,16 @@ async function collectMissingAlbumCovers(): Promise<void> {
   console.log(`- Failed downloads: ${failed}`);
 }
 
-collectMissingAlbumCovers().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+collectMissingAlbumCovers()
+  .then(() => updateManifest())
+  .catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+  });
+
+async function updateManifest(): Promise<void> {
+  const files = await readdir(SONGS_DIR);
+  const xmlFiles = files.filter((f) => f.endsWith('.xml')).sort();
+  await writeFile(MANIFEST_PATH, JSON.stringify(xmlFiles, null, 2) + '\n');
+  console.log(`\nUpdated manifest with ${xmlFiles.length} source(s): ${xmlFiles.join(', ')}`);
+}

@@ -31,14 +31,17 @@ npm run build
 
 ## Data Source
 
-The app reads songs from `sources/default.xml` (Apple Music plist XML) as a static asset:
-- Local dev (`ng serve`): reads local repo file.
-- Deployed app (GitHub Pages): reads the same file from the GitHub Pages URL.
+The app reads songs from XML files in `sources/songs/` (Apple Music plist XML) as static assets.
+A manifest file `sources/songs/index.json` lists available XML sources.
+The active source is persisted as a `?source=` query parameter (defaults to `default.xml`).
+User-created lists are scoped per source.
 
 To update:
+
 1. Export your Apple Music library.
-2. Replace `sources/default.xml`.
-3. Commit and push.
+2. Add or replace XML files in `sources/songs/`.
+3. Run `npm run collect` to update the manifest and download album covers.
+4. Commit and push.
 
 ## Collecting Album Covers
 
@@ -57,6 +60,7 @@ npm run collect
 ```
 
 What it does:
+
 - Parses `sources/default.xml` with the same shared parser logic used by the app
 - For each song, checks if `sources/album-covers/<persistentId>.jpeg` already exists
 - If missing, searches Discogs for that song's album and downloads the image to `sources/album-covers/<persistentId>.jpeg`

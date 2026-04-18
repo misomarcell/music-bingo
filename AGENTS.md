@@ -5,6 +5,7 @@
 Music Bingo is a single-page Angular app that parses an Apple Music XML export and renders songs as cards. Users manage custom lists, assign songs to lists, and share lists via URL.
 
 Album cover workflow:
+
 - `npm run collect` downloads missing cover images from Discogs.
 - Covers are stored directly as files in `sources/album-covers/<persistentId>.jpeg`.
 - The Angular UI resolves cover path from `song.persistentId` and falls back to an icon when the file is missing.
@@ -13,6 +14,7 @@ Album cover workflow:
   - Deployed app reads from GitHub Pages URL.
 
 PWA/service-worker workflow:
+
 - Production builds generate Angular Service Worker (`ngsw`) from `ngsw-config.json`.
 - App shell assets are prefetched; album covers are cached lazily after first view.
 - The app checks for new versions and prompts reload when an update is ready.
@@ -34,19 +36,19 @@ Repository: https://github.com/misomarcell/music-bingo
 
 ## Tech Stack
 
-| Layer | Technology |
-| --- | --- |
-| Framework | Angular 21.2.x (standalone components) |
-| UI | Angular Material 21.2.4 (M3) |
-| Styling | SCSS + `--mat-sys-*` tokens |
-| State | Angular Signals |
-| PWA | Angular Service Worker (`@angular/service-worker`) |
-| Data Source | Apple Music plist XML (`sources/default.xml`) |
-| Sharing | `lz-string` URL payloads |
+| Layer           | Technology                                                    |
+| --------------- | ------------------------------------------------------------- |
+| Framework       | Angular 21.2.x (standalone components)                        |
+| UI              | Angular Material 21.2.4 (M3)                                  |
+| Styling         | SCSS + `--mat-sys-*` tokens                                   |
+| State           | Angular Signals                                               |
+| PWA             | Angular Service Worker (`@angular/service-worker`)            |
+| Data Source     | Apple Music plist XML (`sources/default.xml`)                 |
+| Sharing         | `lz-string` URL payloads                                      |
 | Album Collector | Node script + Discogs API (`scripts/collect-album-covers.ts`) |
-| Script Runtime | Node 20+, `tsx`, `dotenv`, `@xmldom/xmldom` |
-| Linting | ESLint 10 + `angular-eslint` |
-| Deployment | GitHub Actions -> GitHub Pages |
+| Script Runtime  | Node 20+, `tsx`, `dotenv`, `@xmldom/xmldom`                   |
+| Linting         | ESLint 10 + `angular-eslint`                                  |
+| Deployment      | GitHub Actions -> GitHub Pages                                |
 
 ---
 
@@ -57,12 +59,14 @@ music-bingo/
 ├── scripts/
 │   └── collect-album-covers.ts      # Discogs cover collector
 ├── sources/
-│   ├── default.xml                  # Apple Music export
+│   ├── songs/                       # XML source files
+│   │   ├── index.json               # Manifest listing available XML files
+│   │   └── default.xml              # Apple Music export (default source)
 │   └── album-covers/                # Cover files named by Persistent ID with .jpeg extension
 ├── src/
 │   ├── app/
 │   │   ├── components/song-card/    # Song card + cover thumbnail rendering
-│   │   ├── services/                # XML parser, song/list/theme/commit services
+│   │   ├── services/                # XML parser, song/list/theme/commit/source services
 │   │   ├── models/song.ts
 │   │   ├── app.ts
 │   │   ├── app.html
@@ -84,6 +88,12 @@ music-bingo/
 - XML parsing is shared:
   - Browser: `XmlParserService` -> `parseAppleMusicPlistFromRoot`.
   - Node script: `@xmldom/xmldom` + same parser function.
+- Multi-source support:
+  - XML files live in `sources/songs/`, listed in `sources/songs/index.json`.
+  - `SourceService` loads the manifest and manages the active source.
+  - `ListService` scopes lists per source file via localStorage keys.
+  - Active source is persisted as `?source=` query param.
+  - The first tab shows a source selector dropdown when multiple sources exist.
 - Collector source of truth is filesystem only:
   - For each song with `persistentId`, check `sources/album-covers/<persistentId>.jpeg`.
   - If missing, search Discogs and download cover to that exact path.

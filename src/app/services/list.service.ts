@@ -1,13 +1,14 @@
 import { Injectable, signal, computed } from '@angular/core';
 import { SongList } from '../models/song';
 
-const STORAGE_KEY = 'music-bingo-lists';
-const ACTIVE_LIST_KEY = 'music-bingo-active-list';
+const STORAGE_PREFIX = 'music-bingo-lists';
+const ACTIVE_LIST_PREFIX = 'music-bingo-active-list';
 
 @Injectable({ providedIn: 'root' })
 export class ListService {
-  readonly lists = signal<SongList[]>(this.loadLists());
-  readonly activeListId = signal<string>(this.loadActiveListId());
+  private currentSource = 'default.xml';
+  readonly lists = signal<SongList[]>([]);
+  readonly activeListId = signal<string>('');
 
   readonly activeList = computed(() => {
     const lists = this.lists();
@@ -15,7 +16,33 @@ export class ListService {
     return lists.find((l) => l.id === id) || lists[0];
   });
 
-  constructor() {
+  switchSource(source: string): void {
+    this.currentSource = source;
+    this.migrateOldStorage();
+    this.lists.set(this.loadLists());
+    this.activeListId.set(this.loadActiveListId());
+    this.ensureDefaultList();
+  }
+
+  private migrateOldStorage(): void {
+    if (this.currentSource !== 'default.xml') return;
+    const oldKey = 'music-bingo-lists';
+    const oldActiveKey = 'music-bingo-active-list';
+    const newKey = this.storageKey();
+    if (localStorage.getItem(newKey)) return;
+    const oldData = localStorage.getItem(oldKey);
+    if (oldData) {
+      localStorage.setItem(newKey, oldData);
+      const oldActive = localStorage.getItem(oldActiveKey);
+      if (oldActive) {
+        localStorage.setItem(this.activeListStorageKey(), oldActive);
+      }
+      localStorage.removeItem(oldKey);
+      localStorage.removeItem(oldActiveKey);
+    }
+  }
+
+  private ensureDefaultList(): void {
     if (this.lists().length === 0) {
       const defaultList: SongList = {
         id: this.generateId(),
@@ -34,7 +61,15 @@ export class ListService {
 
   selectList(id: string): void {
     this.activeListId.set(id);
-    localStorage.setItem(ACTIVE_LIST_KEY, id);
+    localStorage.setItem(this.activeListStorageKey(), id);
+  }
+
+  private storageKey(): string {
+    return `${STORAGE_PREFIX}:${this.currentSource}`;
+  }
+
+  private activeListStorageKey(): string {
+    return `${ACTIVE_LIST_PREFIX}:${this.currentSource}`;
   }
 
   createList(name: string): void {
@@ -85,12 +120,12 @@ export class ListService {
   }
 
   private save(): void {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(this.lists()));
-    localStorage.setItem(ACTIVE_LIST_KEY, this.activeListId());
+    localStorage.setItem(this.storageKey(), JSON.stringify(this.lists()));
+    localStorage.setItem(this.activeListStorageKey(), this.activeListId());
   }
 
   private loadLists(): SongList[] {
-    const data = localStorage.getItem(STORAGE_KEY);
+    const data = localStorage.getItem(this.storageKey());
     if (!data) return [];
     try {
       const parsed = JSON.parse(data);
@@ -105,7 +140,7 @@ export class ListService {
   }
 
   private loadActiveListId(): string {
-    return localStorage.getItem(ACTIVE_LIST_KEY) || '';
+    return localStorage.getItem(this.activeListStorageKey()) || '';
   }
 
   private generateId(): string {

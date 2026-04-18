@@ -54,9 +54,9 @@
                 "input": "public"
               },
               {
-                "glob": "default.xml",
-                "input": "sources",
-                "output": "sources"
+                "glob": "**/*",
+                "input": "sources/songs",
+                "output": "sources/songs"
               },
               {
                 "glob": "**/*",

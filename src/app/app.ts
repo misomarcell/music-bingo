@@ -11,6 +11,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string';
 import { SongService } from './services/song.service';
 import { ListService } from './services/list.service';
+import { SourceService } from './services/source.service';
 import { CommitInfoService } from './services/commit-info.service';
 import { ThemeService } from './services/theme.service';
 import { PwaUpdateService } from './services/pwa-update.service';
@@ -20,11 +21,7 @@ import { ListNameDialog } from './components/list-name-dialog/list-name-dialog';
 import { ConfirmDialog } from './components/confirm-dialog/confirm-dialog';
 import { ShareDialog } from './components/share-dialog/share-dialog';
 
-const DEFAULT_XML_PATH = 'sources/default.xml';
-
-function resolveAssetUrl(relativePath: string): string {
-  return new URL(relativePath, document.baseURI).toString();
-}
+const DEFAULT_SOURCE = 'default.xml';
 
 const SORT_OPTIONS: { value: SortField; label: string }[] = [
   { value: 'name', label: 'Title' },
@@ -72,6 +69,7 @@ export class App implements OnInit {
   readonly sortOptions = SORT_OPTIONS;
   readonly songService = inject(SongService);
   readonly listService = inject(ListService);
+  readonly sourceService = inject(SourceService);
   readonly commitInfo = inject(CommitInfoService);
   readonly themeService = inject(ThemeService);
   private readonly pwaUpdate = inject(PwaUpdateService);
@@ -97,9 +95,37 @@ export class App implements OnInit {
   });
 
   ngOnInit(): void {
-    this.songService.loadSongs(resolveAssetUrl(DEFAULT_XML_PATH));
     this.pwaUpdate.start();
+    const params = new URLSearchParams(window.location.search);
+    const sourceParam = params.get('source');
+    const initialSource = sourceParam || DEFAULT_SOURCE;
+    this.sourceService.activeSource.set(initialSource);
+    this.sourceService.loadSources();
+    this.switchToSource(initialSource);
     this.restoreTabFromUrl();
+  }
+
+  onSourceChange(filename: string): void {
+    this.sourceService.selectSource(filename);
+    this.switchToSource(filename);
+    this.selectedTabIndex.set(0);
+    this.updateUrl(null);
+  }
+
+  private switchToSource(filename: string): void {
+    this.listService.switchSource(filename);
+    this.songService.loadSongs(this.sourceService.getSourceUrl(filename));
+    this.updateSourceParam(filename);
+  }
+
+  private updateSourceParam(source: string): void {
+    const url = new URL(window.location.href);
+    if (source === DEFAULT_SOURCE) {
+      url.searchParams.delete('source');
+    } else {
+      url.searchParams.set('source', source);
+    }
+    window.history.replaceState({}, '', url.toString());
   }
 
   private restoreTabFromUrl(): void {
@@ -196,7 +222,9 @@ export class App implements OnInit {
   }
 
   onSongExpansionToggle(persistentId: string): void {
-    this.expandedSongPersistentId.update((current) => (current === persistentId ? null : persistentId));
+    this.expandedSongPersistentId.update((current) =>
+      current === persistentId ? null : persistentId,
+    );
   }
 
   trackBySong(_index: number, song: Song): string {
