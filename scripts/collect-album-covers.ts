@@ -405,7 +405,7 @@ collectMissingAlbumCovers()
 
 async function updateManifest(): Promise<void> {
   const files = await readdir(SONGS_DIR);
-  const xmlFiles = files.filter((f) => f.endsWith('.xml')).sort();
+  const xmlFiles = files.filter((f: string) => f.endsWith('.xml')).sort();
   await writeFile(MANIFEST_PATH, JSON.stringify(xmlFiles, null, 2) + '\n');
   console.log(`\nUpdated manifest with ${xmlFiles.length} source(s): ${xmlFiles.join(', ')}`);
 }
