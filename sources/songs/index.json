@@ -1,5 +1,18 @@
 [
-  { "file": "default.xml", "label": "All Songs" },
-  { "file": "pop.xml", "label": "Pop" },
-  { "file": "rock.xml", "label": "Rock" }
+  {
+    "file": "default.xml",
+    "label": "All Songs"
+  },
+  {
+    "file": "pop.xml",
+    "label": "Pop"
+  },
+  {
+    "file": "rock.xml",
+    "label": "Rock"
+  },
+  {
+    "file": "90s-present.xml",
+    "label": "Non Stop P🍿p"
+  }
 ]
