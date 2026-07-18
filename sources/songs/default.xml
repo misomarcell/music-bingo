@@ -4,7 +4,7 @@
 <dict>
 	<key>Major Version</key><integer>1</integer>
 	<key>Minor Version</key><integer>1</integer>
-	<key>Date</key><date>2026-07-18T13:14:48Z</date>
+	<key>Date</key><date>2026-07-18T13:24:00Z</date>
 	<key>Application Version</key><string>1.2.5.7</string>
 	<key>Features</key><integer>5</integer>
 	<key>Show Content Ratings</key><true/>
@@ -30347,6 +30347,33 @@
 			<key>File Folder Count</key><integer>-1</integer>
 			<key>Library Folder Count</key><integer>-1</integer>
 		</dict>
+		<key>95952</key>
+		<dict>
+			<key>Track ID</key><integer>95952</integer>
+			<key>Name</key><string>You and I (Belong together)</string>
+			<key>Artist</key><string>Faze-O</string>
+			<key>Album Artist</key><string>Faze-O</string>
+			<key>Composer</key><string>Ohio Players</string>
+			<key>Album</key><string>Riding High</string>
+			<key>Genre</key><string>Soul</string>
+			<key>Kind</key><string>AIFF audio file</string>
+			<key>Size</key><integer>62364048</integer>
+			<key>Total Time</key><integer>322040</integer>
+			<key>Track Number</key><integer>3</integer>
+			<key>Track Count</key><integer>7</integer>
+			<key>Year</key><integer>1977</integer>
+			<key>Date Modified</key><date>2026-07-07T13:45:05Z</date>
+			<key>Date Added</key><date>2026-07-18T13:22:52Z</date>
+			<key>Bit Rate</key><integer>1536</integer>
+			<key>Sample Rate</key><integer>48000</integer>
+			<key>Comments</key><string>SH 740 / She Records</string>
+			<key>Artwork Count</key><integer>1</integer>
+			<key>Persistent ID</key><string>2355DEF56E624556</string>
+			<key>Track Type</key><string>File</string>
+			<key>Location</key><string>file:///Volumes/T7%20Shield/muzik/songs/disco/70s-80s%20disco%20+%20boogie%20+%20soul/Faze-O%20-%20You%20and%20I%20(Belong%20together).aiff</string>
+			<key>File Folder Count</key><integer>-1</integer>
+			<key>Library Folder Count</key><integer>-1</integer>
+		</dict>
 	</dict>
 	<key>Playlists</key>
 	<array>
@@ -30900,6 +30927,9 @@
 				</dict>
 				<dict>
 					<key>Track ID</key><integer>95888</integer>
+				</dict>
+				<dict>
+					<key>Track ID</key><integer>95952</integer>
 				</dict>
 				<dict>
 					<key>Track ID</key><integer>23225</integer>
